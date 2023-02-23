@@ -5,9 +5,10 @@ void Program::initData(){
 }
 
 void Program::initWindow(){
-    this->videoMode = sf::VideoMode(1920,1080,16);
-    this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Fullscreen);
-    this->window->setFramerateLimit(30);
+    this->videoMode = sf::VideoMode(WIDTH/2,HEIGHT/2);
+    this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Default);
+    this->window->setPosition(sf::Vector2i(WIDTH/4,HEIGHT/4));
+    this->window->setFramerateLimit(24);
 }
 
 Program::Program(){
@@ -40,7 +41,7 @@ void Program::update(){
 }
 
 void Program::render(){
-    this->window->clear();
+    this->window->clear(sf::Color::White);
 
     this->window->display();
 }
