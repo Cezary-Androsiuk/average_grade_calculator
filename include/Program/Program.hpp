@@ -1,7 +1,7 @@
 #ifndef PROGRAM_HPP
 #define PROGRAM_HPP
 #include "../include.hpp"
-// cut, git init, paste, git sketch, git new branch
+
 class Program{
     sf::RenderWindow* window;
     sf::VideoMode videoMode;
@@ -14,6 +14,8 @@ public:
     Program();
     ~Program();
 private:
+
+public:
     void pollEvent();
 
     void update();

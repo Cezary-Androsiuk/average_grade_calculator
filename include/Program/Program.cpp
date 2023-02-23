@@ -20,18 +20,14 @@ Program::~Program(){
 }
 
 void Program::pollEvent(){
-    while(this->window->pollEvent(this->currentEvent))
-    {
-        switch (this->currentEvent.type)
-        {
+    while(this->window->pollEvent(this->currentEvent)){
+        switch (this->currentEvent.type){
         case sf::Event::Closed:
             this->window->close();
             break;
         case sf::Event::KeyPressed:
             if(this->currentEvent.key.code == sf::Keyboard::Escape)
                 this->window->close();
-            if(this->currentEvent.key.code == sf::Keyboard::Space)
-                this->startGame = true;
             break;
         default:
             break;
