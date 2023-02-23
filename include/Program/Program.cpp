@@ -11,9 +11,14 @@ void Program::initWindow(){
     this->window->setFramerateLimit(24);
 }
 
+void Program::initShapes(){
+    this->tile = new Tile(sf::Vector2f(20.f,50.f));
+}
+
 Program::Program(){
     this->initData();
     this->initWindow();
+    this->initShapes();
 }
 
 Program::~Program(){
@@ -30,18 +35,33 @@ void Program::pollEvent(){
             if(this->currentEvent.key.code == sf::Keyboard::Escape)
                 this->window->close();
             break;
+        case sf::Event::MouseButtonPressed:
+            if(this->tile->getBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*this->window)))){
+                if(this->currentEvent.mouseButton.button == sf::Mouse::Left)
+                    this->tile->mouseLeftPressed();
+                else if(this->currentEvent.mouseButton.button == sf::Mouse::Right)
+                    this->tile->mouseRightPressed();
+                else if(this->currentEvent.mouseButton.button == sf::Mouse::Middle)
+                    this->tile->mouseMiddlePressed();
+            }
+            break;
         default:
             break;
+            
         }
     }
 }
 
 void Program::update(){
     this->pollEvent();
+
+    this->tile->update();
 }
 
 void Program::render(){
     this->window->clear(sf::Color::White);
+
+    this->tile->render(this->window);
 
     this->window->display();
 }
