@@ -8,7 +8,7 @@ class Program{
     sf::VideoMode videoMode;
     sf::Event currentEvent;
 
-    Tile* tile;
+    std::vector<Tile*> tiles;
 
     void initData();
     void initWindow();
@@ -19,6 +19,8 @@ public:
 
 public:
     void pollEvent();
+
+    void mouseHoverDetection();
 
     void update();
     void render();

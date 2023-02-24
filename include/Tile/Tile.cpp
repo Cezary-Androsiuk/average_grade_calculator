@@ -1,5 +1,10 @@
 #include "Tile.hpp"
 
+void Tile::init(){
+    this->descriptionShown = false;
+    this->mouseHoverTime = 0;
+}
+
 void Tile::initShape(){
 
 }
@@ -8,7 +13,8 @@ void Tile::initShape(){
 //     Tile(sf::Vector2f(width,height));
 // }
 
-Tile::Tile(sf::Vector2f size){
+Tile::Tile(const sf::Vector2f& size){
+    this->init();
     // this->initShape();
     // this->shape->setSize(size);
     this->mainShape = sf::RectangleShape(size);
@@ -19,16 +25,13 @@ Tile::Tile(sf::Vector2f size){
 Tile::~Tile(){
 }
 
-void Tile::pollEvent(){
-
-}
 
 void Tile::mouseLeftPressed(){
-    printf("Left Key was Pressed!\n");
+        printf("Left Key was Pressed!\n");
 }
 
 void Tile::mouseRightPressed(){
-    printf("Right Key was Pressed!\n");
+        printf("Right Key was Pressed!\n");
 }
 
 void Tile::mouseMiddlePressed(){
@@ -45,4 +48,9 @@ void Tile::render(sf::RenderTarget* window){
 
 sf::FloatRect Tile::getBounds() const{
     return this->mainShape.getGlobalBounds();
+}
+
+void Tile::mouseHover(const bool& visible){
+    if(visible) this->mouseHoverTime++;
+    else this->mouseHoverTime = 0;
 }

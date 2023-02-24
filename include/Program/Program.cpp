@@ -8,11 +8,14 @@ void Program::initWindow(){
     this->videoMode = sf::VideoMode(WIDTH/2,HEIGHT/2);
     this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Default);
     this->window->setPosition(sf::Vector2i(WIDTH/4,HEIGHT/4));
-    this->window->setFramerateLimit(24);
+    this->window->setFramerateLimit(FPS);
 }
 
 void Program::initShapes(){
-    this->tile = new Tile(sf::Vector2f(20.f,50.f));
+    this->tiles.push_back(new Tile(sf::Vector2f(20.f,50.f)));
+
+    // this->tiles.push_back( new Tile(sf::Vector2f(20.f,50.f)));
+    // this->tiles.push_back(Tile(sf::Vector2f(20.f,50.f))); // in this case objects are created again
 }
 
 Program::Program(){
@@ -36,13 +39,16 @@ void Program::pollEvent(){
                 this->window->close();
             break;
         case sf::Event::MouseButtonPressed:
-            if(this->tile->getBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*this->window)))){
+            for(Tile* t : this->tiles){
+                // if(t.getBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*this->window)))){
+                    
+                // }
                 if(this->currentEvent.mouseButton.button == sf::Mouse::Left)
-                    this->tile->mouseLeftPressed();
+                    t->mouseLeftPressed();
                 else if(this->currentEvent.mouseButton.button == sf::Mouse::Right)
-                    this->tile->mouseRightPressed();
+                    t->mouseRightPressed();
                 else if(this->currentEvent.mouseButton.button == sf::Mouse::Middle)
-                    this->tile->mouseMiddlePressed();
+                    t->mouseMiddlePressed();
             }
             break;
         default:
@@ -52,16 +58,28 @@ void Program::pollEvent(){
     }
 }
 
+void Program::mouseHoverDetection(){
+    for(Tile* t : this->tiles){
+        if(t->getBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*this->window))))
+            t->mouseHover(true);
+        else
+            t->mouseHover(false);
+    }
+}
+
 void Program::update(){
     this->pollEvent();
 
-    this->tile->update();
+    this->mouseHoverDetection();
+    for(Tile* t : this->tiles)
+        t->update();
 }
 
 void Program::render(){
     this->window->clear(sf::Color::White);
 
-    this->tile->render(this->window);
+    for(Tile* t : this->tiles)
+        t->render(this->window);
 
     this->window->display();
 }
