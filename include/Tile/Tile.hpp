@@ -1,17 +1,19 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 #include "../include.hpp"
+#include "../DescriptionNotification/DescriptionNotification.hpp"
 
 class Tile{
     sf::RectangleShape mainShape;
     bool descriptionShown;
     int mouseHoverTime;
 
+    DescriptionNotification* message;
+
     void init();
     void initShape();
 
 public:
-    // Tile();
     Tile(const sf::Vector2f&);
     ~Tile();
 

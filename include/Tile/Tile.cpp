@@ -9,14 +9,9 @@ void Tile::initShape(){
 
 }
 
-// Tile::Tile(){
-//     Tile(sf::Vector2f(width,height));
-// }
 
 Tile::Tile(const sf::Vector2f& size){
     this->init();
-    // this->initShape();
-    // this->shape->setSize(size);
     this->mainShape = sf::RectangleShape(size);
     this->mainShape.setFillColor(sf::Color(20,20,180));
     this->mainShape.setPosition(sf::Vector2f(60.f,50.f));
