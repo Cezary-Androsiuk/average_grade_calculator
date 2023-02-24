@@ -13,9 +13,17 @@ void Program::initWindow(){
 
 void Program::initShapes(){
     this->tiles.push_back(new Tile(sf::Vector2f(20.f,50.f)));
+}
 
-    // this->tiles.push_back( new Tile(sf::Vector2f(20.f,50.f)));
-    // this->tiles.push_back(Tile(sf::Vector2f(20.f,50.f))); // in this case objects are created again
+void Program::delShapes(){
+    // for(int i=0; i<this->tiles.size(); i++){
+    //     delete this->tiles[i];
+    //     this->tiles.erase(this->tiles.begin() + i)
+    // }
+    while(!this->tiles.empty()){
+        delete this->tiles.back();
+        this->tiles.pop_back();
+    }
 }
 
 Program::Program(){
@@ -25,6 +33,7 @@ Program::Program(){
 }
 
 Program::~Program(){
+    this->delShapes();
     delete this->window;
 }
 
@@ -60,7 +69,7 @@ void Program::pollEvent(){
 
 void Program::mouseHoverDetection(){
     for(Tile* t : this->tiles){
-        if(t->getBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*this->window))))
+        if(t->getBounds().contains(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window))))
             t->mouseHover(true);
         else
             t->mouseHover(false);

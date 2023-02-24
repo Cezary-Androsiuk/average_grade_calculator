@@ -13,6 +13,8 @@ class Program{
     void initData();
     void initWindow();
     void initShapes();
+    
+    void delShapes();
 public:
     Program();
     ~Program();

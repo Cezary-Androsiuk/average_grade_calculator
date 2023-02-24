@@ -27,11 +27,11 @@ Tile::~Tile(){
 
 
 void Tile::mouseLeftPressed(){
-        printf("Left Key was Pressed!\n");
+    printf("Left Key was Pressed!\n");
 }
 
 void Tile::mouseRightPressed(){
-        printf("Right Key was Pressed!\n");
+    printf("Right Key was Pressed!\n");
 }
 
 void Tile::mouseMiddlePressed(){
