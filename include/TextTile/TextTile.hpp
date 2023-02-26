@@ -1,19 +1,17 @@
-#ifndef GRADETILE_HPP
-#define GRADETILE_HPP
+#ifndef TEXT_TILE_HPP
+#define TEXT_TILE_HPP
 #include "../include.hpp"
 #include "../Tile/Tile.hpp"
 
-class GradeTile : public Tile{
-    bool enabled;
-    bool expected_grades[5];
-    int grade; // {1, 2, 3, 4, 5} => {3, 3.5, 4, 4.5, 5}
-    int grade_type; // 1 red, 2 gray
 
-    void init();
-    void initShape();
+class TextTile : public Tile{
+    std::string name;
+    std::string sName;
+
 public:
-    GradeTile(const sf::Vector2f&, const sf::Vector2f&);
-    ~GradeTile();
+    TextTile(const sf::Vector2f&, const sf::Vector2f&);
+    ~TextTile();
+
 
     void mouseLeftPressed(const sf::Vector2f& mousePos);
     void mouseRightPressed(const sf::Vector2f& mousePos);
@@ -24,8 +22,6 @@ public:
     void update();
     void render(sf::RenderTarget*);
 
-    void setValues();
-    void getValues();
 };
 
 #endif

@@ -21,22 +21,29 @@ GradeTile::~GradeTile(){
 }
 
 
-sf::Vector2f GradeTile::objectRelativePosition(const sf::Vector2f& absolutePosition) const{
-    sf::Vector2f relative;
-    relative.x = absolutePosition.x - this->mainShape.getPosition().x;
-    relative.y = absolutePosition.y - this->mainShape.getPosition().y;
-    return relative;
-}
-std::string GradeTile::mouseLeftPressed(const sf::Vector2f& mousePos){
+void GradeTile::mouseLeftPressed(const sf::Vector2f& mousePos){
     if(this->mouseHoverTime != 0){
         std::cout << "x: " << this->objectRelativePosition(mousePos).x << " y: " <<
         this->objectRelativePosition(mousePos).y << "\n";
     }
-    return "0";
 }
-std::string GradeTile::mouseRightPressed(const sf::Vector2f& mousePos){
-    return "0";
+void GradeTile::mouseRightPressed(const sf::Vector2f& mousePos){
+    
 }
-std::string GradeTile::mouseMiddlePressed(const sf::Vector2f& mousePos){
-    return "0";
+void GradeTile::mouseMiddlePressed(const sf::Vector2f& mousePos){
+    
+}
+void GradeTile::mouseWheelMovedUp(const sf::Vector2f& mousePos){
+    
+}
+void GradeTile::mouseWheelMovedDown(const sf::Vector2f& mousePos){
+    
+}
+
+void GradeTile::update(){
+
+}
+
+void GradeTile::render(sf::RenderTarget* window){
+    window->draw(this->mainShape);
 }

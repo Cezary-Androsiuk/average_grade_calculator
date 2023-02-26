@@ -31,7 +31,10 @@ void Program::initShapes(){
     for(int i=0; i<this->data.size(); i++){
         for(int j=0; j<data[i].size(); j++){
             printf("%s     ",data[i][j].c_str());
-            this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j)));
+            if(data[i][j][0] == '-' || data[i][j][0] == '+')
+                this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j)));
+            else
+                this->tiles.push_back(new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j)));
         }
         printf("\n");
     }
@@ -75,15 +78,20 @@ void Program::pollEvent(){
             break;
         case sf::Event::MouseButtonPressed:
             for(Tile* t : this->tiles){
-                // if(t.getBounds().contains(sf::Vector2f(sf::Mouse::getPosition(*this->window)))){
-                    
-                // }
                 if(this->currentEvent.mouseButton.button == sf::Mouse::Left)
                     t->mouseLeftPressed(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
                 else if(this->currentEvent.mouseButton.button == sf::Mouse::Right)
                     t->mouseRightPressed(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
                 else if(this->currentEvent.mouseButton.button == sf::Mouse::Middle)
                     t->mouseMiddlePressed(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+            }
+            break;
+        case sf::Event::MouseWheelMoved:
+            for(Tile* t : this->tiles){
+                if(this->currentEvent.mouseWheel.delta == 1)
+                    t->mouseWheelMovedUp(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+                else
+                    t->mouseWheelMovedDown(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
             }
             break;
         default:

@@ -3,6 +3,7 @@
 #include "../include.hpp"
 // #include "../Tile/Tile.hpp"
 #include "../GradeTile/GradeTile.hpp"
+#include "../TextTile/TextTile.hpp"
 
 class Program{
     sf::RenderWindow* window;
