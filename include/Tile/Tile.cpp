@@ -10,28 +10,28 @@ void Tile::initShape(){
 }
 
 
-Tile::Tile(const sf::Vector2f& size){
+Tile::Tile(const sf::Vector2f& size, const sf::Vector2f& position){
     this->init();
     this->mainShape = sf::RectangleShape(size);
-    this->mainShape.setFillColor(sf::Color(20,20,180));
-    this->mainShape.setPosition(sf::Vector2f(60.f,50.f));
+    this->mainShape.setPosition(position);
+    this->mainShape.setFillColor(sf::Color(200,200,200));
 }
 
 Tile::~Tile(){
 }
 
 
-void Tile::mouseLeftPressed(){
-    printf("Left Key was Pressed!\n");
-}
+// void Tile::mouseLeftPressed(const sf::Vector2f& mousePos){
+//     printf("Left Key was Pressed!\n");
+// }
 
-void Tile::mouseRightPressed(){
-    printf("Right Key was Pressed!\n");
-}
+// void Tile::mouseRightPressed(const sf::Vector2f& mousePos){
+//     printf("Right Key was Pressed!\n");
+// }
 
-void Tile::mouseMiddlePressed(){
-    printf("Middle Key was Pressed!\n");
-}
+// void Tile::mouseMiddlePressed(const sf::Vector2f& mousePos){
+//     printf("Middle Key was Pressed!\n");
+// }
 
 void Tile::update(){
 
