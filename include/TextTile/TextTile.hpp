@@ -8,6 +8,8 @@ class TextTile : public Tile{
     std::string name;
     std::string sName;
 
+    void init();
+    void initShape();
 public:
     TextTile(const sf::Vector2f&, const sf::Vector2f&);
     ~TextTile();

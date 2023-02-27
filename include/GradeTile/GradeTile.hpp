@@ -5,12 +5,21 @@
 
 class GradeTile : public Tile{
     bool enabled;
-    bool expected_grades[5];
-    int grade; // {1, 2, 3, 4, 5} => {3, 3.5, 4, 4.5, 5}
+    bool expectedGradesStatus[5];
+    struct SpriteTex{
+        sf::Texture texture;
+        sf::Sprite sprite;
+    };
+    
+    SpriteTex grid;
+    SpriteTex expectedGrades[5];
+    
+    int grade; // {0, 1, 2, 3, 4, 5, 6} => {-, 2, 3, 3.5, 4, 4.5, 5}
     int grade_type; // 1 red, 2 gray
 
     void init();
-    void initShape();
+    void initTextures();
+    void initShapes();
 public:
     GradeTile(const sf::Vector2f&, const sf::Vector2f&);
     ~GradeTile();

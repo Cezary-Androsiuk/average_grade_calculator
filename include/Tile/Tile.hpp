@@ -5,6 +5,7 @@
 
 class Tile{
 protected:
+    int tileType; // {0, 1, 2, 3} => {Tile, GradeTile, TextTile, EmptyTile}
     sf::RectangleShape mainShape;
     bool descriptionShown;
     int mouseHoverTime;

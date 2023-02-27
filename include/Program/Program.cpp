@@ -27,10 +27,9 @@ void Program::initWindow(){
 }
 
 void Program::initShapes(){
-    // this->test = new GradeTile(sf::Vector2f(122.f, 122.f),sf::Vector2f(122.f, 122.f));
     for(int i=0; i<this->data.size(); i++){
         for(int j=0; j<data[i].size(); j++){
-            printf("%s     ",data[i][j].c_str());
+            // printf("%s     ",data[i][j].c_str());
             if(data[i][j][0] == '-' || data[i][j][0] == '+')
                 this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j)));
             else
@@ -46,10 +45,6 @@ void Program::exitApp(){
 }
 
 void Program::delShapes(){
-    // for(int i=0; i<this->tiles.size(); i++){
-    //     delete this->tiles[i];
-    //     this->tiles.erase(this->tiles.begin() + i)
-    // }
     while(!this->tiles.empty()){
         delete this->tiles.back();
         this->tiles.pop_back();

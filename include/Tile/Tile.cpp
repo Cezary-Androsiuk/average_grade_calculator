@@ -2,6 +2,7 @@
 
 
 Tile::Tile(const sf::Vector2f& size, const sf::Vector2f& position){
+    this->tileType = 0; // need to be overwrite in childs classes
     this->descriptionShown = false;
     this->mouseHoverTime = 0;
     this->mainShape = sf::RectangleShape(size);
