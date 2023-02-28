@@ -53,9 +53,9 @@ void Program::initShapes(){
     for(int i=0; i<this->data.size(); i++){
         for(int j=0; j<data[i].size(); j++){
             if(data[i][j][0] == '-' || data[i][j][0] == '+')
-                this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j), data[i][j], this->gridTexture, this->lowGradeTexture, this->highGradeTexture));
+                this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,100.f + TILE_SIZE.y * j + j), data[i][j], this->gridTexture, this->lowGradeTexture, this->highGradeTexture));
             else
-                this->tiles.push_back(new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j)));
+                this->tiles.push_back(new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,100.f + TILE_SIZE.y * j + j)));
         }
     }
 }
@@ -134,7 +134,7 @@ void Program::update(){
 }
 
 void Program::render(){
-    this->window->clear(sf::Color::White);
+    this->window->clear(sf::Color(240,240,240));
 
     for(Tile* t : this->tiles)
         t->render(this->window);

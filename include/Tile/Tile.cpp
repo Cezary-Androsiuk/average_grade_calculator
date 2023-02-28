@@ -20,7 +20,3 @@ sf::Vector2f Tile::objectRelativePosition(const sf::Vector2f& absolutePosition) 
     relative.y = absolutePosition.y - this->mainShape.getPosition().y;
     return relative;
 }
-
-// sf::FloatRect Tile::getBounds() const{
-//     return this->mainShape.getGlobalBounds();
-// }
