@@ -13,6 +13,11 @@ class Program{
     std::vector<std::vector<std::string>> data;
     std::vector<Tile*> tiles;
 
+    sf::Texture gridTexture;
+    sf::Texture lowGradeTexture;
+    sf::Texture highGradeTexture;
+
+    void loadTextures();
     void initData();
     void initWindow();
     void initShapes();

@@ -1,5 +1,28 @@
 #include "Program.hpp"
 
+void Program::loadTextures(){
+    if(!this->gridTexture.loadFromFile("src/tile_template.png")){
+        printf("can't load texture in path \"src/tile_template.png\"\n");
+        this->exitApp();
+    }
+    this->gridTexture.setSmooth(false);
+    this->gridTexture.setRepeated(false);
+
+    if(!this->lowGradeTexture.loadFromFile("src/slider_low_grade.png")){ // COLOR
+        printf("can't load texture in path \"src/slider_low_grade.png\"\n");
+        this->exitApp();
+    }
+    this->lowGradeTexture.setSmooth(false);
+    this->lowGradeTexture.setRepeated(true);
+
+    if(!this->highGradeTexture.loadFromFile("src/slider_high_grade.png")){
+        printf("can't load texture in path \"src/slider_high_grade.png\"\n");
+        this->exitApp();
+    }
+    this->highGradeTexture.setSmooth(false);
+    this->highGradeTexture.setRepeated(false);
+}
+
 void Program::initData(){
     std::fstream file;
     file.open("data.txt", std::ios::in);
@@ -29,19 +52,16 @@ void Program::initWindow(){
 void Program::initShapes(){
     for(int i=0; i<this->data.size(); i++){
         for(int j=0; j<data[i].size(); j++){
-            // printf("%s     ",data[i][j].c_str());
             if(data[i][j][0] == '-' || data[i][j][0] == '+')
-                this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j)));
+                this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j), data[i][j], this->gridTexture, this->lowGradeTexture, this->highGradeTexture));
             else
                 this->tiles.push_back(new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,10.f + TILE_SIZE.y * j + j)));
         }
-        printf("\n");
     }
 }
 
 void Program::exitApp(){
-    this->delShapes();
-    delete this->window;
+    this->window->close();
 }
 
 void Program::delShapes(){
@@ -51,14 +71,18 @@ void Program::delShapes(){
     }
 }
 
+
 Program::Program(){
     this->initData();
     this->initWindow();
+    this->loadTextures();
     this->initShapes();
 }
 
 Program::~Program(){
-    this->exitApp();
+    this->delShapes();
+    delete this->window;
+    printf("Application closed correctly!\n");
 }
 
 void Program::pollEvent(){

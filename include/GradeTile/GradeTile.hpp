@@ -4,24 +4,23 @@
 #include "../Tile/Tile.hpp"
 
 class GradeTile : public Tile{
-    bool enabled;
-    bool expectedGradesStatus[5];
-    struct SpriteTex{
-        sf::Texture texture;
-        sf::Sprite sprite;
-    };
+    struct{
+        bool enabled;
+        bool expectedGrade[5];
+        int grade; // {0, 1, 2, 3, 4, 5, 6} => {-, 2, 3, 3.5, 4, 4.5, 5}
+        int grade_type; // 1 red, 2 gray
+    } data;
     
-    SpriteTex grid;
-    SpriteTex expectedGrades[5];
-    
-    int grade; // {0, 1, 2, 3, 4, 5, 6} => {-, 2, 3, 3.5, 4, 4.5, 5}
-    int grade_type; // 1 red, 2 gray
+    sf::Sprite grid;
+    sf::Sprite expectedGrades[5];
+    sf::Sprite grade;
 
     void init();
-    void initTextures();
+    void interpretData(const std::string&);
+    void initTextures(const sf::Texture&, const sf::Texture&, const sf::Texture&);
     void initShapes();
 public:
-    GradeTile(const sf::Vector2f&, const sf::Vector2f&);
+    GradeTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Texture&, const sf::Texture&, const sf::Texture&);
     ~GradeTile();
 
     void mouseLeftPressed(const sf::Vector2f& mousePos);
