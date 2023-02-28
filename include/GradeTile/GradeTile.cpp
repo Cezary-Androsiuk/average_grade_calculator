@@ -46,98 +46,117 @@ GradeTile::~GradeTile(){
 
 
 void GradeTile::mouseLeftPressed(const sf::Vector2f& mousePos){
+    // change type of grade 
     if(this->mouseHoverTime != 0){
         std::cout << "x: " << this->objectRelativePosition(mousePos).x << " y: " <<
         this->objectRelativePosition(mousePos).y << "\n";
     }
 }
 void GradeTile::mouseRightPressed(const sf::Vector2f& mousePos){
-    
+    // lock
 }
 void GradeTile::mouseMiddlePressed(const sf::Vector2f& mousePos){
-    
 }
 void GradeTile::mouseWheelMovedUp(const sf::Vector2f& mousePos){
     // if is on grade part
 
     if(this->mouseHoverTime != 0){
-        switch(this->data.grade){
-        case 0:
-            this->data.grade = 6;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(205,0), sf::Vector2i(40,25)));
+        if(this->data.grade < 1) this->data.grade = 6;
+        else this->data.grade--;
+
+        if(this->data.grade == 0) this->gradeVisible = false;
+        else{
             this->gradeVisible = true;
-            break;
-        case 1:
-            this->data.grade = 0;
-            this->gradeVisible = false;
-            break;
-        case 2:
-            this->data.grade = 1;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(0,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 3:
-            this->data.grade = 2;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(41,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 4:
-            this->data.grade = 3;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(82,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 5:
-            this->data.grade = 4;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(123,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 6:
-            this->data.grade = 5;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(164,0), sf::Vector2i(39,25)));
-            this->gradeVisible = true;
-            break;
+            this->grade.setTextureRect(sf::IntRect(sf::Vector2i((this->data.grade - 1)*41,0), sf::Vector2i(40,25)));
         }
+
+        
+        // switch(this->data.grade){
+        // case 0:
+        //     this->data.grade = 6;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(205,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 1:
+        //     this->data.grade = 0;
+        //     this->gradeVisible = false;
+        //     break;
+        // case 2:
+        //     this->data.grade = 1;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(0,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 3:
+        //     this->data.grade = 2;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(41,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 4:
+        //     this->data.grade = 3;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(82,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 5:
+        //     this->data.grade = 4;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(123,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 6:
+        //     this->data.grade = 5;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(164,0), sf::Vector2i(39,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // }
     }
 }
 void GradeTile::mouseWheelMovedDown(const sf::Vector2f& mousePos){
     // if is on grade part
     if(this->mouseHoverTime != 0){
-        switch(this->data.grade){
-        case 0:
-            this->data.grade = 1;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(0,0), sf::Vector2i(40,25)));
+        if(this->data.grade > 5) this->data.grade = 0;
+        else this->data.grade++;
+
+        if(this->data.grade == 0) this->gradeVisible = false;
+        else{
             this->gradeVisible = true;
-            break;
-        case 1:
-            this->data.grade = 2;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(41,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 2:
-            this->data.grade = 3;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(82,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 3:
-            this->data.grade = 4;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(123,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 4:
-            this->data.grade = 5;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(164,0), sf::Vector2i(39,25)));
-            this->gradeVisible = true;
-            break;
-        case 5:
-            this->data.grade = 6;
-            this->grade.setTextureRect(sf::IntRect(sf::Vector2i(205,0), sf::Vector2i(40,25)));
-            this->gradeVisible = true;
-            break;
-        case 6:
-            this->data.grade = 0;
-            this->gradeVisible = false;
-            break;
+            this->grade.setTextureRect(sf::IntRect(sf::Vector2i((this->data.grade - 1)*41,0), sf::Vector2i(40,25)));
         }
+
+        // switch(this->data.grade){
+        // case 0:
+        //     this->data.grade = 1;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(0,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 1:
+        //     this->data.grade = 2;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(41,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 2:
+        //     this->data.grade = 3;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(82,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 3:
+        //     this->data.grade = 4;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(123,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 4:
+        //     this->data.grade = 5;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(164,0), sf::Vector2i(39,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 5:
+        //     this->data.grade = 6;
+        //     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(205,0), sf::Vector2i(40,25)));
+        //     this->gradeVisible = true;
+        //     break;
+        // case 6:
+        //     this->data.grade = 0;
+        //     this->gradeVisible = false;
+        //     break;
+        // }
     }
 }
 
