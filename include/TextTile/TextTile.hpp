@@ -15,15 +15,16 @@ public:
     ~TextTile();
 
 
-    void mouseLeftPressed(const sf::Vector2f& mousePos);
-    void mouseRightPressed(const sf::Vector2f& mousePos);
-    void mouseMiddlePressed(const sf::Vector2f& mousePos);
-    void mouseWheelMovedUp(const sf::Vector2f& mousePos);
-    void mouseWheelMovedDown(const sf::Vector2f& mousePos);
+    void mouseLeftPressed();
+    void mouseRightPressed();
+    void mouseMiddlePressed();
+    void mouseWheelMovedUp();
+    void mouseWheelMovedDown();
 
     void update();
     void render(sf::RenderTarget*);
 
+    void mouseHoverInfo(const sf::Vector2f&);
 };
 
 #endif

@@ -17,19 +17,19 @@ TextTile::~TextTile(){
 
 }
 
-void TextTile::mouseLeftPressed(const sf::Vector2f& mousePos){
+void TextTile::mouseLeftPressed(){
 
 }
-void TextTile::mouseRightPressed(const sf::Vector2f& mousePos){
+void TextTile::mouseRightPressed(){
 
 }
-void TextTile::mouseMiddlePressed(const sf::Vector2f& mousePos){
+void TextTile::mouseMiddlePressed(){
     
 }
-void TextTile::mouseWheelMovedUp(const sf::Vector2f& mousePos){
+void TextTile::mouseWheelMovedUp(){
     
 }
-void TextTile::mouseWheelMovedDown(const sf::Vector2f& mousePos){
+void TextTile::mouseWheelMovedDown(){
     
 }
 
@@ -40,4 +40,11 @@ void TextTile::update(){
 void TextTile::render(sf::RenderTarget* window){
     
     window->draw(this->mainShape);
+}
+
+void TextTile::mouseHoverInfo(const sf::Vector2f& mousePos){
+    if(this->mainShape.getGlobalBounds().contains(mousePos))
+        this->mouseHoverTime++;
+    else 
+        this->mouseHoverTime = 0;
 }

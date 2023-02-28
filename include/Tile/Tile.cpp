@@ -21,11 +21,6 @@ sf::Vector2f Tile::objectRelativePosition(const sf::Vector2f& absolutePosition) 
     return relative;
 }
 
-sf::FloatRect Tile::getBounds() const{
-    return this->mainShape.getGlobalBounds();
-}
-
-void Tile::mouseHover(const bool& visible){
-    if(visible) this->mouseHoverTime++;
-    else this->mouseHoverTime = 0;
-}
+// sf::FloatRect Tile::getBounds() const{
+//     return this->mainShape.getGlobalBounds();
+// }

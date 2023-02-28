@@ -98,19 +98,19 @@ void Program::pollEvent(){
         case sf::Event::MouseButtonPressed:
             for(Tile* t : this->tiles){
                 if(this->currentEvent.mouseButton.button == sf::Mouse::Left)
-                    t->mouseLeftPressed(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+                    t->mouseLeftPressed();
                 else if(this->currentEvent.mouseButton.button == sf::Mouse::Right)
-                    t->mouseRightPressed(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+                    t->mouseRightPressed();
                 else if(this->currentEvent.mouseButton.button == sf::Mouse::Middle)
-                    t->mouseMiddlePressed(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+                    t->mouseMiddlePressed();
             }
             break;
         case sf::Event::MouseWheelMoved:
             for(Tile* t : this->tiles){
                 if(this->currentEvent.mouseWheel.delta == 1)
-                    t->mouseWheelMovedUp(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+                    t->mouseWheelMovedUp();
                 else
-                    t->mouseWheelMovedDown(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+                    t->mouseWheelMovedDown();
             }
             break;
         default:
@@ -121,10 +121,7 @@ void Program::pollEvent(){
 
 void Program::mouseHoverDetection(){
     for(Tile* t : this->tiles){
-        if(t->getBounds().contains(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window))))
-            t->mouseHover(true);
-        else
-            t->mouseHover(false);
+        t->mouseHoverInfo(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
     }
 }
 

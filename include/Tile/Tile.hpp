@@ -19,17 +19,17 @@ public:
 public:
 
     sf::Vector2f objectRelativePosition(const sf::Vector2f&) const;
-    virtual void mouseLeftPressed(const sf::Vector2f& mousePos) = 0;
-    virtual void mouseRightPressed(const sf::Vector2f& mousePos) = 0;
-    virtual void mouseMiddlePressed(const sf::Vector2f& mousePos) = 0;
-    virtual void mouseWheelMovedUp(const sf::Vector2f& mousePos) = 0;
-    virtual void mouseWheelMovedDown(const sf::Vector2f& mousePos) = 0;
+    virtual void mouseLeftPressed() = 0;
+    virtual void mouseRightPressed() = 0;
+    virtual void mouseMiddlePressed() = 0;
+    virtual void mouseWheelMovedUp() = 0;
+    virtual void mouseWheelMovedDown() = 0;
 
     virtual void update() = 0;
     virtual void render(sf::RenderTarget*) = 0;
 
-    sf::FloatRect getBounds() const;
-    void mouseHover(const bool&);
+    // sf::FloatRect getBounds() const;
+    virtual void mouseHoverInfo(const sf::Vector2f& mousePos) = 0;
 };
 
 #endif

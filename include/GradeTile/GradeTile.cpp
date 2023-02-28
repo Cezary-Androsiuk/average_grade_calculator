@@ -45,19 +45,19 @@ GradeTile::~GradeTile(){
 }
 
 
-void GradeTile::mouseLeftPressed(const sf::Vector2f& mousePos){
+void GradeTile::mouseLeftPressed(){
     // change type of grade 
-    if(this->mouseHoverTime != 0){
-        std::cout << "x: " << this->objectRelativePosition(mousePos).x << " y: " <<
-        this->objectRelativePosition(mousePos).y << "\n";
-    }
+    // if(this->mouseHoverTime != 0){
+    //     std::cout << "x: " << this->objectRelativePosition(mousePos).x << " y: " <<
+    //     this->objectRelativePosition(mousePos).y << "\n";
+    // }
 }
-void GradeTile::mouseRightPressed(const sf::Vector2f& mousePos){
+void GradeTile::mouseRightPressed(){
     // lock
 }
-void GradeTile::mouseMiddlePressed(const sf::Vector2f& mousePos){
+void GradeTile::mouseMiddlePressed(){
 }
-void GradeTile::mouseWheelMovedUp(const sf::Vector2f& mousePos){
+void GradeTile::mouseWheelMovedUp(){
     // if is on grade part
 
     if(this->mouseHoverTime != 0){
@@ -70,7 +70,6 @@ void GradeTile::mouseWheelMovedUp(const sf::Vector2f& mousePos){
             this->grade.setTextureRect(sf::IntRect(sf::Vector2i((this->data.grade - 1)*41,0), sf::Vector2i(40,25)));
         }
 
-        
         // switch(this->data.grade){
         // case 0:
         //     this->data.grade = 6;
@@ -109,7 +108,7 @@ void GradeTile::mouseWheelMovedUp(const sf::Vector2f& mousePos){
         // }
     }
 }
-void GradeTile::mouseWheelMovedDown(const sf::Vector2f& mousePos){
+void GradeTile::mouseWheelMovedDown(){
     // if is on grade part
     if(this->mouseHoverTime != 0){
         if(this->data.grade > 5) this->data.grade = 0;
@@ -120,7 +119,6 @@ void GradeTile::mouseWheelMovedDown(const sf::Vector2f& mousePos){
             this->gradeVisible = true;
             this->grade.setTextureRect(sf::IntRect(sf::Vector2i((this->data.grade - 1)*41,0), sf::Vector2i(40,25)));
         }
-
         // switch(this->data.grade){
         // case 0:
         //     this->data.grade = 1;
@@ -167,5 +165,14 @@ void GradeTile::update(){
 void GradeTile::render(sf::RenderTarget* window){
     window->draw(this->mainShape);
     window->draw(this->grid);
-    window->draw(this->grade);
+    if(this->gradeVisible)
+        window->draw(this->grade);
+}
+
+
+void GradeTile::mouseHoverInfo(const sf::Vector2f& mousePos){
+    if(this->mainShape.getGlobalBounds().contains(mousePos))
+        this->mouseHoverTime++;
+    else 
+        this->mouseHoverTime = 0;
 }
