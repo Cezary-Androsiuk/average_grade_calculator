@@ -14,6 +14,7 @@ class GradeTile : public Tile{
     sf::Sprite grid;
     sf::Sprite expectedGrades[5];
     sf::Sprite grade;
+    bool gradeVisible;
 
     void init();
     void interpretData(const std::string&);
