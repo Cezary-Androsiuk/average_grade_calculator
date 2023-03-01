@@ -1,0 +1,9 @@
+nazwa(skrót);wykład;ćwiczenia;labolatoria;projekt
+angielski(ang);-00000g0;+01100r4;-00000g0;-00000g0
+algorytmy i struktury danych(aisd);+01111r3.5;+00111r5;-00000g0;-00000g0
+analiza matematyczna(am);+11100r4.5;+11100r4.5;-00000g0;-00000g0
+bazy danych(bd);+11111r3.5;-00000g0;+00111r5;-00000g0
+przedsiębiorczość(p);-00000g0;-00000g0;-00000g0;-00000g0
+programowanie zaawansowane(pz);-00000g0;-00000g0;-00000g0;-00000g0
+równania różniczkowe i różnicowe(rrir);-00000g0;-00000g0;-00000g0;-00000g0
+systemy operacyjne(so);-00000g0;-00000g0;-00000g0;-00000g0

@@ -196,6 +196,7 @@ std::string GradeTile::getData() const{
         break;
     }
     dataToReturn += this->data.grade + 48;
+    return dataToReturn;
 }
 
 void GradeTile::mouseHoverInfo(const sf::Vector2f& mousePos){

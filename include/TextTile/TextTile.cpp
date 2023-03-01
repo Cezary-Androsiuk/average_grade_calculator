@@ -43,7 +43,7 @@ void TextTile::render(sf::RenderTarget* window){
 }
 
 std::string TextTile::getData() const{
-    
+    return this->name;
 }
 
 void TextTile::mouseHoverInfo(const sf::Vector2f& mousePos){

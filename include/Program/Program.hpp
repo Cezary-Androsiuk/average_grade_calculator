@@ -11,7 +11,10 @@ class Program{
     sf::Event currentEvent;
 
     std::vector<std::vector<std::string>> data;
-    std::vector<Tile*> tiles;
+    Tile*** tiles;
+    int rows;
+    int lines;
+    // std::vector<std::vector<Tile*>> tiles;
 
     sf::Texture gridTexture;
     sf::Texture highGradeTexture;
