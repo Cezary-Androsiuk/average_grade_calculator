@@ -124,7 +124,7 @@ void Program::update(){
 
     this->mouseHoverDetection();
     for(Tile* t : this->tiles)
-        t->update();
+        t->getData();
 }
 
 void Program::render(){

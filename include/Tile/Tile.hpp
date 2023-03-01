@@ -28,7 +28,7 @@ public:
     virtual void update() = 0;
     virtual void render(sf::RenderTarget*) = 0;
 
-    // sf::FloatRect getBounds() const;
+    virtual std::string getData() const = 0;
     virtual void mouseHoverInfo(const sf::Vector2f& mousePos) = 0;
 };
 

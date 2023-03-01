@@ -45,9 +45,8 @@ public:
 
     void update();
     void render(sf::RenderTarget*);
-
-    void setValues();
-    void getValues();
+    
+    std::string getData() const;
 
     void mouseHoverInfo(const sf::Vector2f&);
 };

@@ -24,6 +24,8 @@ public:
     void update();
     void render(sf::RenderTarget*);
 
+    std::string getData() const;
+
     void mouseHoverInfo(const sf::Vector2f&);
 };
 

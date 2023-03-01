@@ -42,6 +42,10 @@ void TextTile::render(sf::RenderTarget* window){
     window->draw(this->mainShape);
 }
 
+std::string TextTile::getData() const{
+    
+}
+
 void TextTile::mouseHoverInfo(const sf::Vector2f& mousePos){
     if(this->mainShape.getGlobalBounds().contains(mousePos))
         this->mouseHoverTime++;

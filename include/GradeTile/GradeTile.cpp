@@ -16,33 +16,32 @@ void GradeTile::init(){
 void GradeTile::interpretData(const std::string& rawData){
     // "+00111r5"
     switch (rawData[0]){
-    case '+':
-        this->data.enabled = true;
+    case '+': this->data.enabled = true;
         break;
-    case '-':
-        this->data.enabled = false;
+    case '-': this->data.enabled = false;
         break;
-    
-    default:
-        printf("can not interpret '%c' in \"%s\"\n",rawData[0],rawData.c_str());
+    default: printf("can not interpret '%c' in \"%s\"\n",rawData[0],rawData.c_str());
         break;
     }
 
-    for(int i=0; i<5; i++)
-        this->data.expectedGrade[i] = (rawData[i+1] == '1' ? true : false);
+    for(int i=0; i<5; i++){
+        switch (rawData[i+1]){
+        case '0': this->data.expectedGrade[i] = false;
+            break;
+        case '1': this->data.expectedGrade[i] = true;
+            break;
+        default: printf("can not interpret '%c' in \"%s\"\n",rawData[i+1],rawData.c_str());
+            break;
+        }
+    }
 
-    
     switch (rawData[6]){
-    case '-':
-    case 'g':
-        this->data.grade_type = 1;
+    case 'g': this->data.grade_type = 1;
         break;
-    case 'r':
-        this->data.grade_type = 2;
+    case 'r': this->data.grade_type = 2;
         break;
     
-    default:
-        printf("can not interpret '%c' in \"%s\"\n",rawData[6],rawData.c_str());
+    default: printf("can not interpret '%c' in \"%s\"\n",rawData[6],rawData.c_str());
         break;
     }
 
@@ -54,11 +53,12 @@ void GradeTile::interpretData(const std::string& rawData){
     case '3':
     case '4':
     case '5':
-        this->data.grade = rawData[7]-48;
+    case '6':
+    case '7':
+    case '8':
+    case '9': this->data.grade = rawData[7]-48;
         break;
-    
-    default:
-        printf("can not interpret '%c' in \"%s\"\n",rawData[7],rawData.c_str());
+    default: printf("can not interpret '%c' in \"%s\"\n",rawData[7],rawData.c_str());
         break;
     }
 }
@@ -182,6 +182,21 @@ void GradeTile::render(sf::RenderTarget* window){
     }
 }
 
+std::string GradeTile::getData() const{
+    std::string dataToReturn = "";
+    dataToReturn += (this->data.enabled ? '+' : '-');
+    for(int i=0; i<5; i++)
+        dataToReturn += (this->data.expectedGrade[i] ? '1' : '0');
+    switch (this->data.grade_type){
+    case 1: dataToReturn += 'g';
+        break;
+    case 2: dataToReturn += 'r';
+        break;
+    default:
+        break;
+    }
+    dataToReturn += this->data.grade + 48;
+}
 
 void GradeTile::mouseHoverInfo(const sf::Vector2f& mousePos){
     if(this->mainShape.getGlobalBounds().contains(mousePos)){
