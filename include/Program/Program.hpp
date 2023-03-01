@@ -14,7 +14,6 @@ class Program{
     std::vector<Tile*> tiles;
 
     sf::Texture gridTexture;
-    sf::Texture lowGradeTexture;
     sf::Texture highGradeTexture;
 
     void loadTextures();

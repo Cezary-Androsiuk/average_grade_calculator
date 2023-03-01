@@ -1,22 +1,16 @@
 #include "Program.hpp"
 
 void Program::loadTextures(){
-    if(!this->gridTexture.loadFromFile("src/tile_template.png")){
-        printf("can't load texture in path \"src/tile_template.png\"\n");
+    if(!this->gridTexture.loadFromFile("textures/tile_background.bmp")){
+        printf("can't load texture in path \"textures/tile_background.bmp\"\n");
         this->exitApp();
     }
     this->gridTexture.setSmooth(false);
     this->gridTexture.setRepeated(false);
 
-    if(!this->lowGradeTexture.loadFromFile("src/slider_low_grade.png")){ // COLOR
-        printf("can't load texture in path \"src/slider_low_grade.png\"\n");
-        this->exitApp();
-    }
-    this->lowGradeTexture.setSmooth(false);
-    this->lowGradeTexture.setRepeated(true);
 
-    if(!this->highGradeTexture.loadFromFile("src/slider_high_grade.png")){
-        printf("can't load texture in path \"src/slider_high_grade.png\"\n");
+    if(!this->highGradeTexture.loadFromFile("textures/grades_test.bmp")){
+        printf("can't load texture in path \"textures/grades.bmp\"\n");
         this->exitApp();
     }
     this->highGradeTexture.setSmooth(false);
@@ -53,7 +47,7 @@ void Program::initShapes(){
     for(int i=0; i<this->data.size(); i++){
         for(int j=0; j<data[i].size(); j++){
             if(data[i][j][0] == '-' || data[i][j][0] == '+')
-                this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,100.f + TILE_SIZE.y * j + j), data[i][j], this->gridTexture, this->lowGradeTexture, this->highGradeTexture));
+                this->tiles.push_back(new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,100.f + TILE_SIZE.y * j + j), data[i][j], this->gridTexture, this->highGradeTexture));
             else
                 this->tiles.push_back(new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + i,100.f + TILE_SIZE.y * j + j)));
         }
