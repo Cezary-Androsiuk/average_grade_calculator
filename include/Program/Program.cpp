@@ -1,20 +1,25 @@
 #include "Program.hpp"
 
-void Program::loadTextures(){
-    if(!this->gridTexture.loadFromFile("textures/tile_background.bmp")){
-        printf("can't load texture in path \"textures/tile_background.bmp\"\n");
+void Program::loadSources(){
+    if(!this->gridTexture.loadFromFile("sources/tile_background.bmp")){
+        printf("can't load texture in path sources/tile_background.bmp\n");
         this->exitApp();
     }
     this->gridTexture.setSmooth(false);
     this->gridTexture.setRepeated(false);
 
 
-    if(!this->highGradeTexture.loadFromFile("textures/grades_test.bmp")){
-        printf("can't load texture in path \"textures/grades.bmp\"\n");
+    if(!this->highGradeTexture.loadFromFile("sources/grades_test.bmp")){
+        printf("can't load texture in path sources/grades.bmp\n");
         this->exitApp();
     }
     this->highGradeTexture.setSmooth(false);
     this->highGradeTexture.setRepeated(false);
+
+    if(!this->font.loadFromFile("sources/OpenSans-Light.ttf")){
+        printf("can't load font in path sources/OpenSans-Light.ttf");
+        this->exitApp();
+    }
 }
 
 void Program::initData(){
@@ -79,9 +84,12 @@ void Program::initShapes(){
             if(this->data[i][j][0] == '-' || this->data[i][j][0] == '+')
                 this->tiles[i][j] = new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), this->data[i][j], this->gridTexture, this->highGradeTexture);
             else
-                this->tiles[i][j] = new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), this->data[i][j]);
+                this->tiles[i][j] = new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), this->data[i][j], this->font);
         }
     }
+
+    this->gradeAvarageName.setFont(this->font);
+    this->gradeAvarageRange.setFont(this->font);
 }
 
 void Program::exitApp(){
@@ -128,7 +136,7 @@ void Program::deleteData(){
 Program::Program(){
     this->initData();
     this->initWindow();
-    this->loadTextures();
+    this->loadSources();
     this->initShapes();
 }
 
@@ -183,6 +191,99 @@ void Program::mouseHoverDetection(){
             this->tiles[i][j]->mouseHoverInfo(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
         }
     }
+}
+
+bool Program::getGradeFromSingleData(const std::string& singleData, float& min, float& max) const{
+    // "+00000r0"
+    //  01234567
+
+    if(singleData[7] != '0'){
+        // known grade
+        float grade;
+        switch(singleData[7]){
+            case '1': 
+                grade = 2.f;
+                break;
+            case '2': 
+                grade = 2.5f;
+                break;
+            case '3': 
+                grade = 2.75f;
+                break;
+            case '4': 
+                grade = 3.f;
+                break;
+            case '5': 
+                grade = 3.25f;
+                break;
+            case '6': 
+                grade = 3.5f;
+                break;
+            case '7': 
+                grade = 4.f;
+                break;
+            case '8': 
+                grade = 4.5f;
+                break;
+            case '9':
+                grade = 5.f;
+                break;
+        }
+        min = grade;
+        max = grade;
+        return true;
+    }
+    else if(singleData.find("00000",1) != std::string::npos){
+        // unknown grade and unknown range
+        // this tiles are not used in avarage grade
+        return false;    
+    }
+    // unknown grade but known range
+    // XD
+    min = 3.f;
+    if(singleData[1] == '0'){
+        min = 3.5f;
+        if(singleData[2] == '0'){
+            min = 4.f;
+            if(singleData[3] == '0'){
+                min = 4.5f;
+                if(singleData[4] == '0'){
+                    min = 5.f;
+                }
+            }
+        }
+    }
+    max = 5.f;
+    if(singleData[5] == '0'){
+        max = 4.5f;
+        if(singleData[4] == '0'){
+            max = 4.f;
+            if(singleData[3] == '0'){
+                max = 3.5f;
+                if(singleData[2] == '0'){
+                    max = 3.f;
+                }
+            }
+        }
+    }
+
+    return true;
+}
+float Program::computeGradeAvarage(){
+    for(int i=0; i<this->rows; i++){
+        for(int j=0; j<this->lines; j++){
+            if(this->data[i][j][0] == '+'){
+                int gradesCount = 0;
+                float min,max;
+                float sumMin = 0.f, sumMax = 0.f;
+                if(this->getGradeFromSingleData(data[i][j],min,max)){
+
+                    gradesCount++;
+                }
+            }
+        }
+    }
+
 }
 
 void Program::update(){

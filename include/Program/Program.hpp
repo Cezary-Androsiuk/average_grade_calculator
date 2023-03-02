@@ -19,7 +19,13 @@ class Program{
     sf::Texture highGradeTexture;
     sf::Font font;
 
-    void loadTextures();
+    float gradeAvarageValueMin;
+    float gradeAvarageValueMax;
+    sf::Text gradeAvarageName;
+    sf::Text gradeAvarageRange;
+    
+
+    void loadSources();
     void initData();
     void initWindow();
     void initShapes();
@@ -32,10 +38,12 @@ public:
     Program();
     ~Program();
 
-public:
     void pollEvent();
 
     void mouseHoverDetection();
+    bool getGradeFromSingleData(const std::string&, float&, float&) const;
+    float computeGradeAvarage();
+public:
 
     void update();
     void render();
