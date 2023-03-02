@@ -10,7 +10,8 @@ class Program{
     sf::VideoMode videoMode;
     sf::Event currentEvent;
 
-    std::vector<std::vector<std::string>> data;
+    // std::vector<std::vector<std::string>> data;
+    std::string** data;
     Tile*** tiles;
     int rows;
     int lines;
@@ -26,6 +27,8 @@ class Program{
     
     void exitApp();
     void delShapes();
+    void saveData();
+    void deleteData();
 public:
     Program();
     ~Program();

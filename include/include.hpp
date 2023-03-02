@@ -8,10 +8,6 @@
 #include <sstream>
     #include <iostream> // to delete
 
-#define WINDOW_POS_X (1920 - WINDOW_WIDTH)
-#define WINDOW_POS_Y (1080 - WINDOW_HEIGHT)
-#define WINDOW_WIDTH 1126
-#define WINDOW_HEIGHT 724
 // 634
 #define FPS 25
 #define HOVER_DESCRIPTION_ENABLED true

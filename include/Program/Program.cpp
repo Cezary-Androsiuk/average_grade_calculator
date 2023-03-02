@@ -18,6 +18,7 @@ void Program::loadTextures(){
 }
 
 void Program::initData(){
+    std::vector<std::vector<std::string>> vdata;
     std::fstream file;
     file.open("data.txt", std::ios::in);
     if(!file.good()){
@@ -31,21 +32,29 @@ void Program::initData(){
         std::string word;
         while(getline(sentence,word,';'))
             line_of_data.push_back(word);
-        this->data.push_back(line_of_data);
+        vdata.push_back(line_of_data);
     }
     file.close();
 
-    int expectedLength = this->data[0].size();
-    for(int i=0; i<this->data.size(); i++){
-        if(data[0].size() != expectedLength){
+    int expectedLength = vdata[0].size();
+    for(int i=0; i<vdata.size(); i++){
+        if(vdata[0].size() != expectedLength){
             printf("inconsistency in data lines length!\n");
             this->exitApp();
         }
     }
 
-    this->rows = this->data.size();
-    this->lines = this->data[0].size();
+    this->rows = vdata.size();
+    this->lines = vdata[0].size();
+    this->data = new std::string*[this->rows];
+    for(int i=0; i<this->rows; i++)
+        this->data[i] = new std::string[this->lines];
 
+    for(int i=0; i<this->rows; i++){
+        for(int j=0; j<this->lines; j++){
+            this->data[i][j] = vdata[i][j];
+        }
+    }
     this->tiles = new Tile**[this->rows];
     for(int i=0; i<this->rows; i++)
         this->tiles[i] = new Tile*[this->lines];
@@ -59,7 +68,7 @@ void Program::initWindow(){
     
     this->videoMode = sf::VideoMode(windowWidth, windowHeight);
     this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Default);
-    this->window->setPosition(sf::Vector2i(WINDOW_POS_X/2,WINDOW_POS_Y/2));
+    this->window->setPosition(sf::Vector2i((1920 - windowHeight)/2,(1080 - windowWidth)/2));
     this->window->setFramerateLimit(FPS);
 }
 
@@ -89,6 +98,32 @@ void Program::delShapes(){
     delete [] this->tiles;
 }
 
+void Program::saveData(){
+    // save to file
+    std::fstream file;
+    file.open("data_out.txt", std::ios::out);
+    if(!file.good()){
+        printf("can't save data to data.txt!\n");
+        this->deleteData();
+        return;
+    }
+
+    for(int i=0; i<this->rows; i++){
+        for(int j=0; j<this->lines; j++){
+            file << this->data[i][j] << ";";
+        }
+        file << "\n";
+    }
+    file.close();
+
+    this->deleteData();
+}
+
+void Program::deleteData(){
+    for(int i=0; i<this->rows; i++)
+        delete [] this->data[i];
+    delete [] this->data;
+}
 
 Program::Program(){
     this->initData();
@@ -99,6 +134,7 @@ Program::Program(){
 
 Program::~Program(){
     this->delShapes();
+    this->saveData();
     delete this->window;
     printf("Application closed correctly!\n");
 }
@@ -153,8 +189,12 @@ void Program::update(){
     this->pollEvent();
 
     this->mouseHoverDetection();
-    // for(Tile* t : this->tiles)
-        // t->getData();
+    // update this->data depends on tiles data
+    for(int i=0; i<this->rows; i++){
+        for(int j=0; j<this->lines; j++){
+            this->data[i][j] = this->tiles[i][j]->getData();
+        }
+    }
 }
 
 void Program::render(){
