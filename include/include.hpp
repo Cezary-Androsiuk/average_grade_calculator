@@ -8,10 +8,10 @@
 #include <sstream>
     #include <iostream> // to delete
 
-// 634
 #define FPS 25
 #define HOVER_DESCRIPTION_ENABLED true
 #define TILE_SIZE sf::Vector2f(122.f,122.f)
+#define DATA_FILE "data.txt"
 
 #endif
 

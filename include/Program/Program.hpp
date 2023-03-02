@@ -10,15 +10,14 @@ class Program{
     sf::VideoMode videoMode;
     sf::Event currentEvent;
 
-    // std::vector<std::vector<std::string>> data;
     std::string** data;
     Tile*** tiles;
     int rows;
     int lines;
-    // std::vector<std::vector<Tile*>> tiles;
 
     sf::Texture gridTexture;
     sf::Texture highGradeTexture;
+    sf::Font font;
 
     void loadTextures();
     void initData();

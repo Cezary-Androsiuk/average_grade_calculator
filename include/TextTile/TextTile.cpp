@@ -1,16 +1,20 @@
 #include "TextTile.hpp"
 
 void TextTile::init(){
+    this->tileType = 2;
+}
 
+void TextTile::interpretData(const std::string& rawData){
+    this->name = rawData;
 }
 
 void TextTile::initShape(){
-
+    this->mainShape.setFillColor(sf::Color(120,120,120));
 }
 
-TextTile::TextTile(const sf::Vector2f& size, const sf::Vector2f& position) : Tile(size,position){
+TextTile::TextTile(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& rawData) : Tile(size,position){
     this->init();
-    this->mainShape.setFillColor(sf::Color(120,120,120));
+    this->interpretData(rawData);
     this->initShape();
 }
 TextTile::~TextTile(){

@@ -9,9 +9,10 @@ class TextTile : public Tile{
     std::string sName;
 
     void init();
+    void interpretData(const std::string&);
     void initShape();
 public:
-    TextTile(const sf::Vector2f&, const sf::Vector2f&);
+    TextTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&);
     ~TextTile();
 
 

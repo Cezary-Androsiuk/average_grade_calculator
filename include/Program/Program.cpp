@@ -20,9 +20,9 @@ void Program::loadTextures(){
 void Program::initData(){
     std::vector<std::vector<std::string>> vdata;
     std::fstream file;
-    file.open("data.txt", std::ios::in);
+    file.open(DATA_FILE, std::ios::in);
     if(!file.good()){
-        printf("can't read file data.txt!\n");
+        printf("can't read file %s!\n",DATA_FILE);
         this->exitApp();
     }
     std::string line;
@@ -61,14 +61,14 @@ void Program::initData(){
 }
 
 void Program::initWindow(){
+    //                left margin +   sum of tiles width     + sum of separators between tiles   + right margin
+    unsigned int windowWidth = 10 + this->rows * TILE_SIZE.y +    (this->rows-1) * 2             + 10;
     //                   top margin +   sum of tiles heights    + sum of separators between tiles + bottom margin
     unsigned int windowHeight = 100 + this->lines * TILE_SIZE.x +    (this->lines-1) * 2          + 10;
-    //                left margin +   sum of tiles heights   + sum of separators between tiles   + right margin
-    unsigned int windowWidth = 10 + this->rows * TILE_SIZE.y +    (this->rows-1) * 2             + 10;
     
     this->videoMode = sf::VideoMode(windowWidth, windowHeight);
     this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Default);
-    this->window->setPosition(sf::Vector2i((1920 - windowHeight)/2,(1080 - windowWidth)/2));
+    this->window->setPosition(sf::Vector2i((1920 - windowWidth)/2,(1080 - windowHeight)/2));
     this->window->setFramerateLimit(FPS);
 }
 
@@ -76,10 +76,10 @@ void Program::initShapes(){
     for(int i=0; i<this->rows; i++){
         for(int j=0; j<this->lines; j++){
 
-            if(data[i][j][0] == '-' || data[i][j][0] == '+')
-                this->tiles[i][j] = new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), data[i][j], this->gridTexture, this->highGradeTexture);
+            if(this->data[i][j][0] == '-' || this->data[i][j][0] == '+')
+                this->tiles[i][j] = new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), this->data[i][j], this->gridTexture, this->highGradeTexture);
             else
-                this->tiles[i][j] = new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j));
+                this->tiles[i][j] = new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), this->data[i][j]);
         }
     }
 }
@@ -101,9 +101,9 @@ void Program::delShapes(){
 void Program::saveData(){
     // save to file
     std::fstream file;
-    file.open("data_out.txt", std::ios::out);
+    file.open(DATA_FILE, std::ios::out);
     if(!file.good()){
-        printf("can't save data to data.txt!\n");
+        printf("can't save data to %s!\n",DATA_FILE);
         this->deleteData();
         return;
     }
