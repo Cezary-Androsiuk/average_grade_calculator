@@ -42,7 +42,7 @@ public:
 
     void mouseHoverDetection();
     bool getGradeFromSingleData(const std::string&, float&, float&) const;
-    float computeGradeAvarage();
+    void computeGradeAvarage();
 public:
 
     void update();

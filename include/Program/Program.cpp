@@ -269,21 +269,25 @@ bool Program::getGradeFromSingleData(const std::string& singleData, float& min, 
 
     return true;
 }
-float Program::computeGradeAvarage(){
+void Program::computeGradeAvarage(){
+    float sumMin = 0.f, sumMax = 0.f;
+    int gradesCount = 0;
     for(int i=0; i<this->rows; i++){
         for(int j=0; j<this->lines; j++){
             if(this->data[i][j][0] == '+'){
-                int gradesCount = 0;
                 float min,max;
-                float sumMin = 0.f, sumMax = 0.f;
                 if(this->getGradeFromSingleData(data[i][j],min,max)){
-
+                    sumMin += min;
+                    sumMax += max;
                     gradesCount++;
                 }
+                
             }
         }
     }
-
+    this->gradeAvarageValueMin = sumMin / gradesCount;
+    this->gradeAvarageValueMax = sumMax / gradesCount;
+    printf("%.2f - %.2f\n", this->gradeAvarageValueMin, this->gradeAvarageValueMax);
 }
 
 void Program::update(){
@@ -296,6 +300,7 @@ void Program::update(){
             this->data[i][j] = this->tiles[i][j]->getData();
         }
     }
+    this->computeGradeAvarage();
 }
 
 void Program::render(){
