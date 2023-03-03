@@ -156,6 +156,12 @@ void Program::pollEvent(){
         case sf::Event::KeyPressed:
             if(this->currentEvent.key.code == sf::Keyboard::Escape)
                 this->window->close();
+            else 
+                for(int i=0; i<this->rows; i++){
+                    for(int j=0; j<this->lines; j++){
+                        this->tiles[i][j]->keyboardKeys(this->currentEvent.key.code);
+                    }
+                }
             break;
         case sf::Event::MouseButtonPressed:
             for(int i=0; i<this->rows; i++){

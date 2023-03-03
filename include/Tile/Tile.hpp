@@ -24,6 +24,7 @@ public:
     virtual void mouseMiddlePressed() = 0;
     virtual void mouseWheelMovedUp() = 0;
     virtual void mouseWheelMovedDown() = 0;
+    virtual void keyboardKeys(const sf::Keyboard::Key&) = 0;
 
     virtual void update() = 0;
     virtual void render(sf::RenderTarget*) = 0;

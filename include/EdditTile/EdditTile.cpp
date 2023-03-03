@@ -1,15 +1,15 @@
 #include "EdditTile.hpp"
 
-EdditTile::EdditTile(const sf::Vector2f& size,const sf::Vector2f& position) : Tile(size, position){
+EdditTile::EdditTile(const sf::Vector2f& size,const sf::Vector2f& position, const sf::Texture& texture) : Tile(size, position){
     this->tileType = 3;
 }
 EdditTile::~EdditTile(){
-    
+
 }
 
 
 void EdditTile::mouseLeftPressed(){
-    //none
+
 }
 void EdditTile::mouseRightPressed(){
     // none
@@ -23,6 +23,9 @@ void EdditTile::mouseWheelMovedUp(){
 void EdditTile::mouseWheelMovedDown(){
     // none
 }
+void EdditTile::keyboardKeys(const sf::Keyboard::Key&){
+    // none
+}
 
 void EdditTile::update(){
     
@@ -32,8 +35,11 @@ void EdditTile::render(sf::RenderTarget*){
 }
 
 std::string EdditTile::getData() const{
-    return "VOID";
+    return "+";
 }
 void EdditTile::mouseHoverInfo(const sf::Vector2f& mousePos){
-    // none
+    if(this->mainShape.getGlobalBounds().contains(mousePos))
+        this->mouseHoverTime++;
+    else
+        this->mouseHoverTime = 0;
 }

@@ -166,6 +166,9 @@ void GradeTile::mouseWheelMovedDown(){
         this->updateGradeTexture();
     }
 }
+void GradeTile::keyboardKeys(const sf::Keyboard::Key&){
+
+}
 
 void GradeTile::update(){
  

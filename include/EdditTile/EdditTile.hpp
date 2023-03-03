@@ -6,7 +6,7 @@
 class EdditTile : public Tile{
     sf::Sprite addSign;
 public:
-    EdditTile(const sf::Vector2f&,const sf::Vector2f&);
+    EdditTile(const sf::Vector2f&,const sf::Vector2f&, const sf::Texture&);
     ~EdditTile();
 public:
     void mouseLeftPressed();
@@ -14,6 +14,7 @@ public:
     void mouseMiddlePressed();
     void mouseWheelMovedUp();
     void mouseWheelMovedDown();
+    void keyboardKeys(const sf::Keyboard::Key&);
 
     void update();
     void render(sf::RenderTarget*);

@@ -4,6 +4,8 @@
 // #include "../Tile/Tile.hpp"
 #include "../GradeTile/GradeTile.hpp"
 #include "../TextTile/TextTile.hpp"
+#include "../EmptyTile/EmptyTile.hpp"
+#include "../EdditTile/EdditTile.hpp"
 
 class Program{
     sf::RenderWindow* window;

@@ -41,6 +41,9 @@ void TextTile::mouseWheelMovedUp(){
 void TextTile::mouseWheelMovedDown(){
     
 }
+void TextTile::keyboardKeys(const sf::Keyboard::Key&){
+
+}
 
 void TextTile::update(){
 

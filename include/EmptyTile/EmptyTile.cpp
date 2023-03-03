@@ -22,6 +22,9 @@ void EmptyTile::mouseWheelMovedUp(){
 void EmptyTile::mouseWheelMovedDown(){
     // none
 }
+void EmptyTile::keyboardKeys(const sf::Keyboard::Key&){
+    // none
+}
 
 void EmptyTile::update(){
     
