@@ -34,7 +34,7 @@ void EmptyTile::render(sf::RenderTarget*){
 }
 
 std::string EmptyTile::getData() const{
-    return "VOID";
+    return "-";
 }
 void EmptyTile::mouseHoverInfo(const sf::Vector2f& mousePos){
     // none

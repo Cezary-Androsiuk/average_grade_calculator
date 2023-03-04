@@ -2,6 +2,7 @@
 
 EdditTile::EdditTile(const sf::Vector2f& size,const sf::Vector2f& position, const sf::Texture& texture) : Tile(size, position){
     this->tileType = 3;
+    this->mainShape.setFillColor(sf::Color::Red);
 }
 EdditTile::~EdditTile(){
 
@@ -12,27 +13,30 @@ void EdditTile::mouseLeftPressed(){
 
 }
 void EdditTile::mouseRightPressed(){
-    // none
+
 }
 void EdditTile::mouseMiddlePressed(){
-    // none
+    
 }
 void EdditTile::mouseWheelMovedUp(){
-    // none
+    
 }
 void EdditTile::mouseWheelMovedDown(){
-    // none
+    
 }
 void EdditTile::keyboardKeys(const sf::Keyboard::Key&){
     // none
 }
 
+
 void EdditTile::update(){
     
 }
-void EdditTile::render(sf::RenderTarget*){
-    // none
+void EdditTile::render(sf::RenderTarget* window){
+    window->draw(this->mainShape);
+    // window->draw(this->edditSign);
 }
+
 
 std::string EdditTile::getData() const{
     return "+";

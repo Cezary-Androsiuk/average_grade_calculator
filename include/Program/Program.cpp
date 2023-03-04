@@ -2,23 +2,30 @@
 
 void Program::loadSources(){
     if(!this->gridTexture.loadFromFile("sources/tile_background.bmp")){
-        printf("can't load texture in path sources/tile_background.bmp\n");
-        this->exitApp();
+        std::cin.get();
+        exit(0);
     }
     this->gridTexture.setSmooth(false);
     this->gridTexture.setRepeated(false);
 
 
     if(!this->highGradeTexture.loadFromFile("sources/grades_test.bmp")){
-        printf("can't load texture in path sources/grades.bmp\n");
-        this->exitApp();
+        std::cin.get();
+        exit(0);
     }
     this->highGradeTexture.setSmooth(false);
     this->highGradeTexture.setRepeated(false);
 
+    // if(!this->edditTexture.loadFromFile("sources/eddit.bmp")){
+    //     std::cin.get();
+    //     exit(0);
+    // }
+    // this->edditTexture.setSmooth(false);
+    // this->edditTexture.setRepeated(false);
+
     if(!this->font.loadFromFile("sources/OpenSans-Light.ttf")){
-        printf("can't load font in path sources/OpenSans-Light.ttf");
-        this->exitApp();
+        std::cin.get();
+        exit(0);
     }
 }
 
@@ -28,7 +35,8 @@ void Program::initData(){
     file.open(DATA_FILE, std::ios::in);
     if(!file.good()){
         printf("can't read file %s!\n",DATA_FILE);
-        this->exitApp();
+        std::cin.get();
+        exit(0);
     }
     std::string line;
     while(getline(file,line)){
@@ -45,7 +53,8 @@ void Program::initData(){
     for(int i=0; i<vdata.size(); i++){
         if(vdata[0].size() != expectedLength){
             printf("inconsistency in data lines length!\n");
-            this->exitApp();
+            std::cin.get();
+            exit(0);
         }
     }
 
@@ -67,13 +76,21 @@ void Program::initData(){
 
 void Program::initWindow(){
     //                left margin +   sum of tiles width     + sum of separators between tiles   + right margin
-    unsigned int windowWidth = 10 + this->rows * TILE_SIZE.y +    (this->rows-1) * 2             + 10;
+    unsigned int windowWidth = 
+        WINDOW_LEFT_MARGIN + 
+        this->rows * TILE_HEIGHT + 
+        (this->rows-1) * TILE_SEPARATOR + 
+        WINDOW_RIGHT_MARGIN;
     //                   top margin +   sum of tiles heights    + sum of separators between tiles + bottom margin
-    unsigned int windowHeight = 100 + this->lines * TILE_SIZE.x +    (this->lines-1) * 2          + 10;
+    unsigned int windowHeight = 
+        WINDOW_TOP_MARGIN + 
+        this->lines * TILE_HEIGHT + 
+        (this->lines-1) * TILE_SEPARATOR + 
+        WINDOW_BOTTOM_MARGIN;
     
     this->videoMode = sf::VideoMode(windowWidth, windowHeight);
     this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Default);
-    this->window->setPosition(sf::Vector2i((1920 - windowWidth)/2,(1080 - windowHeight)/2));
+    this->window->setPosition(sf::Vector2i((MAIN_WINDOW_WIDTH - windowWidth)/2,(MAIN_WINDOW_HEIGHT - windowHeight)/2));
     this->window->setFramerateLimit(FPS);
 }
 
@@ -81,10 +98,56 @@ void Program::initShapes(){
     for(int i=0; i<this->rows; i++){
         for(int j=0; j<this->lines; j++){
 
-            if(this->data[i][j][0] == '-' || this->data[i][j][0] == '+')
-                this->tiles[i][j] = new GradeTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), this->data[i][j], this->gridTexture, this->highGradeTexture);
+            if(this->data[i][j][0] == '-')
+                this->tiles[i][j] = new EmptyTile(
+                    sf::Vector2f(
+                        TILE_WIDTH,
+                        TILE_HEIGHT
+                    ),
+                    sf::Vector2f(
+                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
+                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
+                        )
+                    );
+            else if(this->data[i][j][0] == '+')
+                this->tiles[i][j] = new EdditTile(
+                    sf::Vector2f(
+                        TILE_WIDTH,
+                        TILE_HEIGHT
+                    ),
+                    sf::Vector2f(
+                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
+                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
+                        ), 
+                    this->edditTexture
+                    );
+            else if(this->data[i][j][0] == '0' || this->data[i][j][0] == '1')
+                this->tiles[i][j] = new GradeTile(
+                    sf::Vector2f(
+                        TILE_WIDTH,
+                        TILE_HEIGHT
+                    ),
+                    sf::Vector2f(
+                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
+                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
+                        ), 
+                    this->data[i][j], 
+                    this->gridTexture, 
+                    this->highGradeTexture
+                    );
             else
-                this->tiles[i][j] = new TextTile(TILE_SIZE,sf::Vector2f(10.f + TILE_SIZE.x*i + 2*i,100.f + TILE_SIZE.y*j + 2*j), this->data[i][j], this->font);
+                this->tiles[i][j] = new TextTile(
+                    sf::Vector2f(
+                        TILE_WIDTH,
+                        TILE_HEIGHT
+                    ),
+                    sf::Vector2f(
+                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
+                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
+                        ), 
+                    this->data[i][j], 
+                    this->font
+                    );
         }
     }
 
@@ -92,9 +155,6 @@ void Program::initShapes(){
     this->gradeAvarageRange.setFont(this->font);
 }
 
-void Program::exitApp(){
-    this->window->close();
-}
 
 void Program::delShapes(){
     for(int i=0; i<this->rows; i++){
@@ -134,10 +194,10 @@ void Program::deleteData(){
 }
 
 Program::Program(){
-    this->initData();
-    this->initWindow();
     this->loadSources();
+    this->initData();
     this->initShapes();
+    this->initWindow();
 }
 
 Program::~Program(){
@@ -200,7 +260,7 @@ void Program::mouseHoverDetection(){
 }
 
 bool Program::getGradeFromSingleData(const std::string& singleData, float& min, float& max) const{
-    // "+00000r0"
+    // "000000r0"
     //  01234567
 
     if(singleData[7] != '0'){
@@ -293,7 +353,7 @@ void Program::computeGradeAvarage(){
     }
     this->gradeAvarageValueMin = sumMin / gradesCount;
     this->gradeAvarageValueMax = sumMax / gradesCount;
-    printf("%.2f - %.2f\n", this->gradeAvarageValueMin, this->gradeAvarageValueMax);
+    // printf("%.2f - %.2f\n", this->gradeAvarageValueMin, this->gradeAvarageValueMax);
 }
 
 void Program::update(){

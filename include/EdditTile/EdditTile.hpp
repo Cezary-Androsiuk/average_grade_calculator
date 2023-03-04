@@ -4,7 +4,7 @@
 #include "../Tile/Tile.hpp"
 
 class EdditTile : public Tile{
-    sf::Sprite addSign;
+    sf::Sprite edditSign;
 public:
     EdditTile(const sf::Vector2f&,const sf::Vector2f&, const sf::Texture&);
     ~EdditTile();

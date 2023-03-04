@@ -19,6 +19,7 @@ class Program{
 
     sf::Texture gridTexture;
     sf::Texture highGradeTexture;
+    sf::Texture edditTexture;
     sf::Font font;
 
     float gradeAvarageValueMin;
@@ -32,7 +33,6 @@ class Program{
     void initWindow();
     void initShapes();
     
-    void exitApp();
     void delShapes();
     void saveData();
     void deleteData();

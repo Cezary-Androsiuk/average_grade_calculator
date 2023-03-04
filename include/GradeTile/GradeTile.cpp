@@ -12,13 +12,12 @@ void GradeTile::init(){
     this->mouseHoverOnPart = 0;
     this->mouseHoverTime = 0;
 }
-
 void GradeTile::interpretData(const std::string& rawData){
     // "+00111r5"
     switch (rawData[0]){
-    case '+': this->data.enabled = true;
+    case '1': this->data.enabled = true;
         break;
-    case '-': this->data.enabled = false;
+    case '0': this->data.enabled = false;
         break;
     default: printf("can not interpret '%c' in \"%s\"\n",rawData[0],rawData.c_str());
         break;
@@ -62,13 +61,11 @@ void GradeTile::interpretData(const std::string& rawData){
         break;
     }
 }
-
 void GradeTile::initTextures(const sf::Texture& gridTexture, const sf::Texture& highGradeTexture){
     this->grid.setTexture(gridTexture);
 
     this->grade.setTexture(highGradeTexture);
 }
-
 void GradeTile::initShapes(){
     this->mainShape.setFillColor(sf::Color(180,180,180));
     
@@ -94,13 +91,13 @@ void GradeTile::initShapes(){
     }
 }
 
+
 GradeTile::GradeTile(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& rawData, const sf::Texture& gridTexture, const sf::Texture& highGradeTexture) : Tile(size, position){
     this->init();
     this->interpretData(rawData);
     this->initTextures(gridTexture,highGradeTexture);
     this->initShapes();
 }
-
 GradeTile::~GradeTile(){
 
 }
@@ -109,7 +106,6 @@ GradeTile::~GradeTile(){
 void GradeTile::updateGradeTexture(){
     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(this->data.grade*80,0), sf::Vector2i(80,50)));
 }
-
 void GradeTile::mouseLeftPressed(){
     if(this->data.enabled == false)
         return;
@@ -170,13 +166,13 @@ void GradeTile::keyboardKeys(const sf::Keyboard::Key&){
 
 }
 
+
 void GradeTile::update(){
  
 }
-
 void GradeTile::render(sf::RenderTarget* window){
     if(this->data.enabled){
-    window->draw(this->mainShape);
+        window->draw(this->mainShape);
         for(int i=0; i<5; i++)
             if(this->data.expectedGrade[i])
                 window->draw(this->expectedGrades[i]);
@@ -185,9 +181,10 @@ void GradeTile::render(sf::RenderTarget* window){
     }
 }
 
+
 std::string GradeTile::getData() const{
     std::string dataToReturn = "";
-    dataToReturn += (this->data.enabled ? '+' : '-');
+    dataToReturn += (this->data.enabled ? '1' : '0');
     for(int i=0; i<5; i++)
         dataToReturn += (this->data.expectedGrade[i] ? '1' : '0');
     switch (this->data.grade_type){
@@ -201,7 +198,6 @@ std::string GradeTile::getData() const{
     dataToReturn += this->data.grade + 48;
     return dataToReturn;
 }
-
 void GradeTile::mouseHoverInfo(const sf::Vector2f& mousePos){
     if(this->mainShape.getGlobalBounds().contains(mousePos)){
         this->mouseHoverTime++;
