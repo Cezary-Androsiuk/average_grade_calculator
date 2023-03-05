@@ -5,8 +5,11 @@
 
 class EdditTile : public Tile{
     sf::Sprite edditSign;
+    int columns;
+
+    void interpretData(const std::string&);
 public:
-    EdditTile(const sf::Vector2f&,const sf::Vector2f&, const sf::Texture&);
+    EdditTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Texture&);
     ~EdditTile();
 public:
     void mouseLeftPressed();

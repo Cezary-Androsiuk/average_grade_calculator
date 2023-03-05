@@ -9,7 +9,7 @@ void Program::loadSources(){
     this->gridTexture.setRepeated(false);
 
 
-    if(!this->highGradeTexture.loadFromFile("sources/grades_test.bmp")){
+    if(!this->highGradeTexture.loadFromFile("sources/grades.bmp")){
         std::cin.get();
         exit(0);
     }
@@ -27,6 +27,18 @@ void Program::loadSources(){
         std::cin.get();
         exit(0);
     }
+    this->gradeAvarageName.setFont(this->font);
+    this->gradeAvarageName.setString("Text 1");
+    this->gradeAvarageName.setCharacterSize(20);
+    this->gradeAvarageName.setPosition(sf::Vector2f(100.f,20.f));
+    this->gradeAvarageName.setFillColor(sf::Color(0,0,0));
+
+    this->gradeAvarageRange.setFont(this->font);
+    this->gradeAvarageRange.setString("Text 2");
+    this->gradeAvarageRange.setCharacterSize(20);
+    this->gradeAvarageRange.setPosition(sf::Vector2f(400.f,20.f));
+    this->gradeAvarageRange.setFillColor(sf::Color(0,0,0));
+
 }
 
 void Program::initData(){
@@ -74,6 +86,44 @@ void Program::initData(){
         this->tiles[i] = new Tile*[this->lines];
 }
 
+void Program::initShapes(){
+    for(int i=0; i<this->rows; i++){
+        for(int j=0; j<this->lines; j++){
+
+            if(this->data[i][j][0] == '-')
+                this->tiles[i][j] = new EmptyTile(
+                    TILE_SIZE,
+                    TILE_POSITION
+                    );
+            else if(this->data[i][j][0] == '+')
+                this->tiles[i][j] = new EdditTile(
+                    TILE_SIZE,
+                    TILE_POSITION,
+                    this->data[i][j],
+                    this->edditTexture
+                    );
+            else if(this->data[i][j][0] == '0' || this->data[i][j][0] == '1')
+                this->tiles[i][j] = new GradeTile(
+                    TILE_SIZE,
+                    TILE_POSITION, 
+                    this->data[i][j], 
+                    this->gridTexture, 
+                    this->highGradeTexture
+                    );
+            else
+                this->tiles[i][j] = new TextTile(
+                    TILE_SIZE,
+                    TILE_POSITION,
+                    this->data[i][j], 
+                    this->font
+                    );
+        }
+    }
+
+    this->gradeAvarageName.setFont(this->font);
+    this->gradeAvarageRange.setFont(this->font);
+}
+
 void Program::initWindow(){
     //                left margin +   sum of tiles width     + sum of separators between tiles   + right margin
     unsigned int windowWidth = 
@@ -92,67 +142,6 @@ void Program::initWindow(){
     this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Default);
     this->window->setPosition(sf::Vector2i((MAIN_WINDOW_WIDTH - windowWidth)/2,(MAIN_WINDOW_HEIGHT - windowHeight)/2));
     this->window->setFramerateLimit(FPS);
-}
-
-void Program::initShapes(){
-    for(int i=0; i<this->rows; i++){
-        for(int j=0; j<this->lines; j++){
-
-            if(this->data[i][j][0] == '-')
-                this->tiles[i][j] = new EmptyTile(
-                    sf::Vector2f(
-                        TILE_WIDTH,
-                        TILE_HEIGHT
-                    ),
-                    sf::Vector2f(
-                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
-                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
-                        )
-                    );
-            else if(this->data[i][j][0] == '+')
-                this->tiles[i][j] = new EdditTile(
-                    sf::Vector2f(
-                        TILE_WIDTH,
-                        TILE_HEIGHT
-                    ),
-                    sf::Vector2f(
-                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
-                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
-                        ), 
-                    this->edditTexture
-                    );
-            else if(this->data[i][j][0] == '0' || this->data[i][j][0] == '1')
-                this->tiles[i][j] = new GradeTile(
-                    sf::Vector2f(
-                        TILE_WIDTH,
-                        TILE_HEIGHT
-                    ),
-                    sf::Vector2f(
-                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
-                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
-                        ), 
-                    this->data[i][j], 
-                    this->gridTexture, 
-                    this->highGradeTexture
-                    );
-            else
-                this->tiles[i][j] = new TextTile(
-                    sf::Vector2f(
-                        TILE_WIDTH,
-                        TILE_HEIGHT
-                    ),
-                    sf::Vector2f(
-                        WINDOW_LEFT_MARGIN + TILE_WIDTH*i + TILE_SEPARATOR*i,
-                        WINDOW_TOP_MARGIN + TILE_HEIGHT*j + TILE_SEPARATOR*j
-                        ), 
-                    this->data[i][j], 
-                    this->font
-                    );
-        }
-    }
-
-    this->gradeAvarageName.setFont(this->font);
-    this->gradeAvarageRange.setFont(this->font);
 }
 
 
@@ -202,7 +191,7 @@ Program::Program(){
 
 Program::~Program(){
     this->delShapes();
-    this->saveData();
+    // this->saveData();
     delete this->window;
     printf("Application closed correctly!\n");
 }
@@ -377,6 +366,9 @@ void Program::render(){
             this->tiles[i][j]->render(this->window);
         }
     }
+
+    this->window->draw(this->gradeAvarageName);
+    this->window->draw(this->gradeAvarageRange);
 
     this->window->display();
 }

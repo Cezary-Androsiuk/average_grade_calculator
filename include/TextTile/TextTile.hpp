@@ -6,13 +6,14 @@
 
 class TextTile : public Tile{
     std::string name;
-    std::string sName;
+    // std::wstring name;
+    // std::string sName;
 
     sf::Text text;
 
     void init();
     void interpretData(const std::string&);
-    void initFonts(const sf::Font&);
+    void initText(const sf::Font&);
     void initShape();
 public:
     TextTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Font&);

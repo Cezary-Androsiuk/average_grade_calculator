@@ -69,16 +69,16 @@ void GradeTile::initTextures(const sf::Texture& gridTexture, const sf::Texture& 
 void GradeTile::initShapes(){
     this->mainShape.setFillColor(sf::Color(180,180,180));
     
-    this->grid.setPosition(this->mainShape.getPosition());
+    this->grid.setPosition(this->tilePosition);
 
-    this->grade.setPosition(sf::Vector2f(this->mainShape.getPosition().x + 21.f, this->mainShape.getPosition().y + 44.f));
+    this->grade.setPosition(sf::Vector2f(this->tilePosition.x + 21.f, this->tilePosition.y + 44.f));
     this->updateGradeTexture();
 
     for(int i=0; i<5; i++){
         this->expectedGrades[i].setPosition(
             sf::Vector2f(
-                this->mouseUpdateAreaOnTile[i].left + this->mainShape.getPosition().x,
-                this->mouseUpdateAreaOnTile[i].top + this->mainShape.getPosition().y
+                this->mouseUpdateAreaOnTile[i].left + this->tilePosition.x,
+                this->mouseUpdateAreaOnTile[i].top + this->tilePosition.y
             )
         );
         this->expectedGrades[i].setSize(
@@ -203,7 +203,7 @@ void GradeTile::mouseHoverInfo(const sf::Vector2f& mousePos){
         this->mouseHoverTime++;
         // detect above what part mouse is hovering (nice inglisz)
         for(int i=0; i<6; i++)
-            if(this->mouseUpdateAreaOnTile[i].contains(this->objectRelativePosition(mousePos)))
+            if(this->mouseUpdateAreaOnTile[i].contains(this->globalPosition_to_localPosition(mousePos)))
                 this->mouseHoverOnPart = i+1;
     }
     else {

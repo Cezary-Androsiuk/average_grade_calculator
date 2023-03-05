@@ -1,6 +1,13 @@
 #include "EdditTile.hpp"
 
-EdditTile::EdditTile(const sf::Vector2f& size,const sf::Vector2f& position, const sf::Texture& texture) : Tile(size, position){
+
+void EdditTile::interpretData(const std::string& rawData){
+    // std::string text = rawData;
+    // text.erase(text.begin());
+    this->columns = atoi(rawData.substr(1, rawData.length()-1).c_str());
+}
+
+EdditTile::EdditTile(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& rawData, const sf::Texture& texture) : Tile(size, position){
     this->tileType = 3;
     this->mainShape.setFillColor(sf::Color::Red);
 }
@@ -39,7 +46,7 @@ void EdditTile::render(sf::RenderTarget* window){
 
 
 std::string EdditTile::getData() const{
-    return "+";
+    return std::string("+") + std::to_string(this->columns);
 }
 void EdditTile::mouseHoverInfo(const sf::Vector2f& mousePos){
     if(this->mainShape.getGlobalBounds().contains(mousePos))

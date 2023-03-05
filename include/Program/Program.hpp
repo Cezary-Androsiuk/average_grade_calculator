@@ -30,8 +30,8 @@ class Program{
 
     void loadSources();
     void initData();
-    void initWindow();
     void initShapes();
+    void initWindow();
     
     void delShapes();
     void saveData();
