@@ -3,7 +3,6 @@
 void TextTile::init(){
     this->tileType = 2;
 }
-
 void TextTile::interpretData(const std::string& rawData){
     this->name = rawData;
 }

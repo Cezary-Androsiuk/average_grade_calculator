@@ -31,13 +31,13 @@ void Program::loadSources(){
     this->gradeAvarageName.setString("Text 1");
     this->gradeAvarageName.setCharacterSize(20);
     this->gradeAvarageName.setPosition(sf::Vector2f(100.f,20.f));
-    this->gradeAvarageName.setFillColor(sf::Color(0,0,0));
+    this->gradeAvarageName.setFillColor(sf::Color(255,255,255));
 
     this->gradeAvarageRange.setFont(this->font);
     this->gradeAvarageRange.setString("Text 2");
     this->gradeAvarageRange.setCharacterSize(20);
     this->gradeAvarageRange.setPosition(sf::Vector2f(400.f,20.f));
-    this->gradeAvarageRange.setFillColor(sf::Color(0,0,0));
+    this->gradeAvarageRange.setFillColor(sf::Color(255,255,255));
 
 }
 
@@ -132,7 +132,7 @@ void Program::initWindow(){
         WINDOW_BOTTOM_MARGIN;
     
     this->videoMode = sf::VideoMode(windowWidth, windowHeight);
-    this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::Default);
+    this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::None);
     this->window->setPosition(sf::Vector2i((MAIN_WINDOW_WIDTH - windowWidth)/2,(MAIN_WINDOW_HEIGHT - windowHeight)/2));
     this->window->setFramerateLimit(FPS);
 }
@@ -198,12 +198,12 @@ void Program::pollEvent(){
         case sf::Event::KeyPressed:
             if(this->currentEvent.key.code == sf::Keyboard::Escape)
                 this->window->close();
-            else 
-                for(int i=0; i<this->rows; i++){
-                    for(int j=0; j<this->lines; j++){
-                        this->tiles[i][j]->keyboardKeys(this->currentEvent.key.code);
-                    }
-                }
+            // else 
+            //     for(int i=0; i<this->rows; i++){
+            //         for(int j=0; j<this->lines; j++){
+            //             this->tiles[i][j]->keyboardKeys(this->currentEvent.key.code);
+            //         }
+            //     }
             break;
         case sf::Event::MouseButtonPressed:
             for(int i=0; i<this->rows; i++){
@@ -352,7 +352,7 @@ void Program::update(){
 }
 
 void Program::render(){
-    this->window->clear(sf::Color(240,240,240));
+    this->window->clear(sf::Color(30,30,30));
 
     for(int i=0; i<this->rows; i++){
         for(int j=0; j<this->lines; j++){

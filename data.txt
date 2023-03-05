@@ -1,9 +1,9 @@
--;wykład;ćwiczenia;labolatoria;projekt;
+-;wyklad;cwiczenia;labolatoria;projekt;
 angielski;100000g0;100000g0;100000g0;100000g0;
 algorytmy i struktury danych;100000g0;100000g0;100000g0;100000g0;
 analiza matematyczna;100000g0;100000g0;100000g0;100000g0;
 bazy danych;100000g0;100000g0;100000g0;100000g0;
-przedsiębiorczość;100000g0;100000g0;100000g0;100000g0;
+przedsiebiorczosc;100000g0;100000g0;100000g0;100000g0;
 programowanie zaawansowane;100000g0;100000g0;100000g0;100000g0;
-równania różniczkowe i różnicowe;100000g0;100000g0;100000g0;100000g0;
+rownania rozniczkowe i roznicowe;100000g0;100000g0;100000g0;100000g0;
 systemy operacyjne;100000g0;100000g0;100000g0;100000g0;

@@ -67,11 +67,13 @@ void GradeTile::initTextures(const sf::Texture& gridTexture, const sf::Texture& 
     this->grade.setTexture(highGradeTexture);
 }
 void GradeTile::initShapes(){
-    this->mainShape.setFillColor(sf::Color(180,180,180));
+    this->mainShape.setFillColor(sf::Color(175,175,175));
     
     this->grid.setPosition(this->tilePosition);
+    // this->grid.setColor(sf::Color(255,255,255,175));
 
     this->grade.setPosition(sf::Vector2f(this->tilePosition.x + 21.f, this->tilePosition.y + 44.f));
+    // this->grade.setColor(sf::Color(255,255,255,175));
     this->updateGradeTexture();
 
     for(int i=0; i<5; i++){
@@ -106,6 +108,7 @@ GradeTile::~GradeTile(){
 void GradeTile::updateGradeTexture(){
     this->grade.setTextureRect(sf::IntRect(sf::Vector2i(this->data.grade*80,0), sf::Vector2i(80,50)));
 }
+
 void GradeTile::mouseLeftPressed(){
     if(this->data.enabled == false)
         return;
@@ -161,9 +164,6 @@ void GradeTile::mouseWheelMovedDown(){
 
         this->updateGradeTexture();
     }
-}
-void GradeTile::keyboardKeys(const sf::Keyboard::Key&){
-
 }
 
 

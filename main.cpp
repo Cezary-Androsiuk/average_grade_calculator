@@ -9,3 +9,12 @@ int main(){
         app.render();
     }
 }
+
+/*
+
+TODO grade value 1/4  &  3/4 
+TODO colors upgrade
+TODO avarage grade print
+TODO text center and split
+
+*/

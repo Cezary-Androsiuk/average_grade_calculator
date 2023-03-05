@@ -42,7 +42,6 @@ public:
     void mouseMiddlePressed();
     void mouseWheelMovedUp();
     void mouseWheelMovedDown();
-    void keyboardKeys(const sf::Keyboard::Key&);
 
     void update();
     void render(sf::RenderTarget*);
