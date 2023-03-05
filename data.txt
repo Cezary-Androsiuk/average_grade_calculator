@@ -7,4 +7,3 @@ przedsiębiorczość;100000g0;100000g0;100000g0;100000g0;
 programowanie zaawansowane;100000g0;100000g0;100000g0;100000g0;
 równania różniczkowe i różnicowe;100000g0;100000g0;100000g0;100000g0;
 systemy operacyjne;100000g0;100000g0;100000g0;100000g0;
-+;-;-;-;-;

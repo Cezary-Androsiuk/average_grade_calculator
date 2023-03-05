@@ -5,7 +5,7 @@
 
 class Tile{
 protected:
-    int tileType; // {0, 1, 2, 3, 4} => {Tile, GradeTile, TextTile, EmptyTile, AddTile}
+    int tileType; // {0, 1, 2, 3} => {Tile, GradeTile, TextTile, EmptyTile}
     sf::Vector2f tileSize;
     sf::Vector2f tilePosition;
     sf::RectangleShape mainShape;

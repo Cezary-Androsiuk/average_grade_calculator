@@ -95,13 +95,6 @@ void Program::initShapes(){
                     TILE_SIZE,
                     TILE_POSITION
                     );
-            else if(this->data[i][j][0] == '+')
-                this->tiles[i][j] = new EdditTile(
-                    TILE_SIZE,
-                    TILE_POSITION,
-                    this->data[i][j],
-                    this->edditTexture
-                    );
             else if(this->data[i][j][0] == '0' || this->data[i][j][0] == '1')
                 this->tiles[i][j] = new GradeTile(
                     TILE_SIZE,
