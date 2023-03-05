@@ -135,6 +135,7 @@ void Program::initWindow(){
     this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::None);
     this->window->setPosition(sf::Vector2i((MAIN_WINDOW_WIDTH - windowWidth)/2,(MAIN_WINDOW_HEIGHT - windowHeight)/2));
     this->window->setFramerateLimit(FPS);
+    printf("window: %ux%u\n",this->window->getSize().x, this->window->getSize().y);
 }
 
 
