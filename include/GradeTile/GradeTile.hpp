@@ -24,19 +24,21 @@ class GradeTile : public Tile{
     int mouseHoverOnPart; // 0 none, 1-5 expectedGrade, 6 grade
 
     sf::Sprite grid;
-    sf::Sprite grade;
-    sf::RectangleShape expectedGrades[5];
-    // sf::RectangleShape disableBlocker;
+    sf::Sprite currentGrade;
+    sf::Sprite expectedGrade[5];
+
 
     void init();
     void interpretData(const std::string&);
-    void initTextures(const sf::Texture&, const sf::Texture&);
+    void initTextures(const sf::Texture&, const sf::Texture&, const sf::Texture&);
     void initShapes();
 public:
-    GradeTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Texture&, const sf::Texture&);
+    GradeTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Texture&, const sf::Texture&, const sf::Texture&);
     ~GradeTile();
 
-    void updateGradeTexture();
+    void updateGridTexture();
+    void updateExpectedGradeTexture();
+    void updateCurrentGradeTexture();
 
     void mouseLeftPressed();
     void mouseRightPressed();

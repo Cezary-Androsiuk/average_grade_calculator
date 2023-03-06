@@ -1,27 +1,27 @@
 #include "Program.hpp"
 
 void Program::loadSources(){
-    if(!this->gridTexture.loadFromFile("sources/tile_background.bmp")){
+    if(!this->gridTexture.loadFromFile("sources/GradeTile_template.bmp")){
         std::cin.get();
         exit(0);
     }
     this->gridTexture.setSmooth(false);
     this->gridTexture.setRepeated(false);
 
-
-    if(!this->highGradeTexture.loadFromFile("sources/grades.bmp")){
+    
+    if(!this->expectedGradeTexture.loadFromFile("sources/expected_grade.bmp")){
         std::cin.get();
         exit(0);
     }
-    this->highGradeTexture.setSmooth(false);
-    this->highGradeTexture.setRepeated(false);
+    this->expectedGradeTexture.setSmooth(false);
+    this->expectedGradeTexture.setRepeated(false);
 
-    // if(!this->edditTexture.loadFromFile("sources/eddit.bmp")){
-    //     std::cin.get();
-    //     exit(0);
-    // }
-    // this->edditTexture.setSmooth(false);
-    // this->edditTexture.setRepeated(false);
+    if(!this->currentGradeTexture.loadFromFile("sources/current_grade.bmp")){
+        std::cin.get();
+        exit(0);
+    }
+    this->currentGradeTexture.setSmooth(false);
+    this->currentGradeTexture.setRepeated(false);
 
     if(!this->font.loadFromFile("sources/OpenSans-Light.ttf")){
         std::cin.get();
@@ -106,8 +106,9 @@ void Program::initShapes(){
                     TILE_SIZE,
                     TILE_POSITION, 
                     this->data[i][j], 
-                    this->gridTexture, 
-                    this->highGradeTexture
+                    this->gridTexture,
+                    this->expectedGradeTexture,
+                    this->currentGradeTexture
                     );
             else
                 this->tiles[i][j] = new TextTile(
@@ -187,7 +188,7 @@ Program::Program(){
 
 Program::~Program(){
     this->delShapes();
-    // this->saveData();
+    this->saveData();
     delete this->window;
     printf("Application closed correctly!\n");
 }

@@ -19,8 +19,8 @@ class Program{
     unsigned int windowHeight;
 
     sf::Texture gridTexture;
-    sf::Texture highGradeTexture;
-    sf::Texture edditTexture;
+    sf::Texture expectedGradeTexture;
+    sf::Texture currentGradeTexture;
     sf::Font font;
 
     float gradeAvarageValueMin;

@@ -14,7 +14,7 @@ void TextTile::initText(const sf::Font& font){
     this->text.setFillColor(sf::Color(0,0,0));
 }
 void TextTile::initShape(){
-    this->mainShape.setFillColor(sf::Color(120,120,120));
+    this->mainShape.setFillColor(sf::Color(200,200,200));
 
 }
 

@@ -72,41 +72,36 @@ void GradeTile::interpretData(const std::string& rawData){
         break;
     }
 }
-void GradeTile::initTextures(const sf::Texture& gridTexture, const sf::Texture& highGradeTexture){
+void GradeTile::initTextures(const sf::Texture& gridTexture, const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture){
     this->grid.setTexture(gridTexture);
-
-    this->grade.setTexture(highGradeTexture);
+    for(int i=0; i<5; i++) this->expectedGrade[i].setTexture(expectedGradeTexture);
+    this->currentGrade.setTexture(currentGradeTexture);
 }
 void GradeTile::initShapes(){
     this->mainShape.setFillColor(sf::Color(175,175,175));
     
     this->grid.setPosition(this->tilePosition);
-
-    this->grade.setPosition(sf::Vector2f(this->tilePosition.x + 21.f, this->tilePosition.y + 44.f));
-    this->updateGradeTexture();
+    this->updateGridTexture();
 
     for(int i=0; i<5; i++){
-        this->expectedGrades[i].setPosition(
+        this->expectedGrade[i].setPosition(
             sf::Vector2f(
-                this->mouseUpdateAreaOnTile[i].left + this->tilePosition.x,
-                this->mouseUpdateAreaOnTile[i].top + this->tilePosition.y
+                this->mouseUpdateAreaOnTile[i].left + this->tilePosition.x + 1,
+                this->mouseUpdateAreaOnTile[i].top + this->tilePosition.y + 1
             )
         );
-        this->expectedGrades[i].setSize(
-            sf::Vector2f(
-                this->mouseUpdateAreaOnTile[i].width,
-                this->mouseUpdateAreaOnTile[i].height
-            )
-        );
-        this->expectedGrades[i].setFillColor(sf::Color(225,65,65));
     }
+    this->updateExpectedGradeTexture();
+
+    this->currentGrade.setPosition(sf::Vector2f(this->tilePosition.x + 21.f, this->tilePosition.y + 44.f));
+    this->updateCurrentGradeTexture();
 }
 
 
-GradeTile::GradeTile(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& rawData, const sf::Texture& gridTexture, const sf::Texture& highGradeTexture) : Tile(size, position){
+GradeTile::GradeTile(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& rawData, const sf::Texture& gridTexture, const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture) : Tile(size, position){
     this->init();
     this->interpretData(rawData);
-    this->initTextures(gridTexture,highGradeTexture);
+    this->initTextures(gridTexture, expectedGradeTexture, currentGradeTexture);
     this->initShapes();
 }
 GradeTile::~GradeTile(){
@@ -114,12 +109,36 @@ GradeTile::~GradeTile(){
 }
 
 
-void GradeTile::updateGradeTexture(){
-    this->grade.setTextureRect(sf::IntRect(sf::Vector2i(this->data.grade*80,0), sf::Vector2i(80,50)));
+void GradeTile::updateGridTexture(){
+    this->grid.setTextureRect(
+        sf::IntRect(
+            sf::Vector2i(this->data.locked*122, 0), 
+            sf::Vector2i(122, 122)
+            )
+        );
+}
+
+void GradeTile::updateExpectedGradeTexture(){
+    for(int i=0; i<5; i++)
+        this->expectedGrade[i].setTextureRect(
+            sf::IntRect(
+                sf::Vector2i(22.f*i, 0.f),
+                sf::Vector2i(22.f, 14.f)
+            )
+        );
+}
+
+void GradeTile::updateCurrentGradeTexture(){
+    this->currentGrade.setTextureRect(
+        sf::IntRect(
+            sf::Vector2i(this->data.grade*80, 0), 
+            sf::Vector2i(80, 50)
+            )
+        );
 }
 
 void GradeTile::mouseLeftPressed(){
-    if(this->data.enabled == false)
+    if(!this->data.enabled || this->data.locked)
         return;
 
     switch (this->mouseHoverOnPart){
@@ -137,6 +156,22 @@ void GradeTile::mouseLeftPressed(){
     }
 }
 void GradeTile::mouseRightPressed(){
+    if(!this->data.enabled)
+        return;
+    // lock/unlock
+    switch (this->mouseHoverOnPart){
+    case 1: break;
+    case 2: break;
+    case 3: break;
+    case 4: break;
+    case 5: break;
+    case 6:
+        this->data.locked = (this->data.locked ? false : true);
+        this->updateGridTexture();
+        break;
+    }
+}
+void GradeTile::mouseMiddlePressed(){
     // enable/disable
     switch (this->mouseHoverOnPart){
     case 1:
@@ -149,29 +184,26 @@ void GradeTile::mouseRightPressed(){
         break;
     }
 }
-void GradeTile::mouseMiddlePressed(){
-    // lock/unlock
-}
 void GradeTile::mouseWheelMovedUp(){
-    if(this->data.enabled == false)
+    if(!this->data.enabled || this->data.locked)
         return;
 
     if(this->mouseHoverOnPart == 6){
         if(this->data.grade > 8) this->data.grade = 0;
         else this->data.grade++;
 
-        this->updateGradeTexture();
+        this->updateCurrentGradeTexture();
     }
 }
 void GradeTile::mouseWheelMovedDown(){
-    if(this->data.enabled == false)
+    if(!this->data.enabled || this->data.locked)
         return;
         
     if(this->mouseHoverOnPart == 6){
         if(this->data.grade < 1) this->data.grade = 9;
         else this->data.grade--;
 
-        this->updateGradeTexture();
+        this->updateCurrentGradeTexture();
     }
 }
 
@@ -181,12 +213,12 @@ void GradeTile::update(){
 }
 void GradeTile::render(sf::RenderTarget* window){
     if(this->data.enabled){
-        window->draw(this->mainShape);
+        // window->draw(this->mainShape);
+        window->draw(this->grid);
         for(int i=0; i<5; i++)
             if(this->data.expectedGrade[i])
-                window->draw(this->expectedGrades[i]);
-        window->draw(this->grid);
-        window->draw(this->grade);
+                window->draw(this->expectedGrade[i]);
+        window->draw(this->currentGrade);
     }
 }
 

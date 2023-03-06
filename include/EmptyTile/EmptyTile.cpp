@@ -2,6 +2,7 @@
 
 EmptyTile::EmptyTile(const sf::Vector2f& size,const sf::Vector2f& position) : Tile(size, position){
     this->tileType = 3;
+    // this->mainShape.setFillColor(sf::Color(200,200,200));
 }
 EmptyTile::~EmptyTile(){
     
@@ -29,7 +30,8 @@ void EmptyTile::keyboardKeys(const sf::Keyboard::Key&){
 void EmptyTile::update(){
     
 }
-void EmptyTile::render(sf::RenderTarget*){
+void EmptyTile::render(sf::RenderTarget* window){
+    // window->draw(this->mainShape);
     // none
 }
 
