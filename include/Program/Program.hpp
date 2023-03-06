@@ -15,6 +15,8 @@ class Program{
     Tile*** tiles;
     int rows;
     int lines;
+    unsigned int windowWidth;
+    unsigned int windowHeight;
 
     sf::Texture gridTexture;
     sf::Texture highGradeTexture;
@@ -40,7 +42,9 @@ public:
     ~Program();
 
     void pollEvent();
-
+    
+    void updateData();
+    void updateText();
     void mouseHoverDetection();
     bool getGradeFromSingleData(const std::string&, float&, float&) const;
     void computeGradeAvarage();

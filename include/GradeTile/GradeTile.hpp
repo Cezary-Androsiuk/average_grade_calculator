@@ -16,6 +16,7 @@ class GradeTile : public Tile{
 
     struct{
         bool enabled;
+        bool locked;
         bool expectedGrade[5];
         int grade; // {0, 1, 2, 3, 4, 5, 6, 7, 8, 9} => {-, 2, 2.5, 2.75, 3, 3.25, 3.5, 4, 4.5, 5}
         int grade_type; // 1 gray, 2 red

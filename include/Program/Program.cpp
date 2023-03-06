@@ -27,21 +27,12 @@ void Program::loadSources(){
         std::cin.get();
         exit(0);
     }
-    this->gradeAvarageName.setFont(this->font);
-    this->gradeAvarageName.setString("Text 1");
-    this->gradeAvarageName.setCharacterSize(20);
-    this->gradeAvarageName.setPosition(sf::Vector2f(100.f,20.f));
-    this->gradeAvarageName.setFillColor(sf::Color(255,255,255));
-
-    this->gradeAvarageRange.setFont(this->font);
-    this->gradeAvarageRange.setString("Text 2");
-    this->gradeAvarageRange.setCharacterSize(20);
-    this->gradeAvarageRange.setPosition(sf::Vector2f(400.f,20.f));
-    this->gradeAvarageRange.setFillColor(sf::Color(255,255,255));
-
 }
 
 void Program::initData(){
+    this->gradeAvarageValueMin = 0.f;
+    this->gradeAvarageValueMax = 0.f;
+
     std::vector<std::vector<std::string>> vdata;
     std::fstream file;
     file.open(DATA_FILE, std::ios::in);
@@ -84,6 +75,21 @@ void Program::initData(){
     this->tiles = new Tile**[this->rows];
     for(int i=0; i<this->rows; i++)
         this->tiles[i] = new Tile*[this->lines];
+
+
+    
+    //                left margin + sum of tiles width + sum of separators between tiles + right margin
+    this->windowWidth = 
+        WINDOW_LEFT_MARGIN + 
+        this->rows * TILE_HEIGHT + 
+        (this->rows-1) * TILE_SEPARATOR + 
+        WINDOW_RIGHT_MARGIN;
+    //                   top margin + sum of tiles heights + sum of separators between tiles + bottom margin
+    this->windowHeight = 
+        WINDOW_TOP_MARGIN + 
+        this->lines * TILE_HEIGHT + 
+        (this->lines-1) * TILE_SEPARATOR + 
+        WINDOW_BOTTOM_MARGIN;
 }
 
 void Program::initShapes(){
@@ -114,26 +120,22 @@ void Program::initShapes(){
     }
 
     this->gradeAvarageName.setFont(this->font);
+    this->gradeAvarageName.setString(L"Możliwa Średnia Ocen");
+    this->gradeAvarageName.setCharacterSize(20);
+    this->gradeAvarageName.setFillColor(sf::Color(255,255,255));
+    this->gradeAvarageName.setPosition(sf::Vector2f(0.f,20.f));
+    
     this->gradeAvarageRange.setFont(this->font);
+    this->gradeAvarageRange.setString("0.00 - 0.00");
+    this->gradeAvarageRange.setCharacterSize(20);
+    this->gradeAvarageRange.setFillColor(sf::Color(255,255,255));
+    this->gradeAvarageRange.setPosition(sf::Vector2f(0.f,50.f));
 }
 
 void Program::initWindow(){
-    //                left margin +   sum of tiles width     + sum of separators between tiles   + right margin
-    unsigned int windowWidth = 
-        WINDOW_LEFT_MARGIN + 
-        this->rows * TILE_HEIGHT + 
-        (this->rows-1) * TILE_SEPARATOR + 
-        WINDOW_RIGHT_MARGIN;
-    //                   top margin +   sum of tiles heights    + sum of separators between tiles + bottom margin
-    unsigned int windowHeight = 
-        WINDOW_TOP_MARGIN + 
-        this->lines * TILE_HEIGHT + 
-        (this->lines-1) * TILE_SEPARATOR + 
-        WINDOW_BOTTOM_MARGIN;
-    
     this->videoMode = sf::VideoMode(windowWidth, windowHeight);
     this->window = new sf::RenderWindow(this->videoMode, "Average Grade Calculator", sf::Style::None);
-    this->window->setPosition(sf::Vector2i((MAIN_WINDOW_WIDTH - windowWidth)/2,(MAIN_WINDOW_HEIGHT - windowHeight)/2));
+    this->window->setPosition(sf::Vector2i((MAIN_WINDOW_WIDTH - this->windowWidth)/2,(MAIN_WINDOW_HEIGHT - this->windowHeight)/2));
     this->window->setFramerateLimit(FPS);
     printf("window: %ux%u\n",this->window->getSize().x, this->window->getSize().y);
 }
@@ -234,6 +236,28 @@ void Program::pollEvent(){
     }
 }
 
+void Program::updateData(){
+    // update this->data depends on tiles data
+    for(int i=0; i<this->rows; i++){
+        for(int j=0; j<this->lines; j++){
+            this->data[i][j] = this->tiles[i][j]->getData();
+        }
+    }
+}
+
+void Program::updateText(){
+    this->gradeAvarageName.setPosition(sf::Vector2f(
+        ( (float)this->windowWidth - this->gradeAvarageName.getGlobalBounds().width)/2,
+        this->gradeAvarageName.getPosition().y));
+    this->gradeAvarageRange.setPosition(sf::Vector2f(
+        ( (float)this->windowWidth - this->gradeAvarageRange.getGlobalBounds().width)/2,
+        this->gradeAvarageRange.getPosition().y));
+
+    std::string gradeAvarage = std::to_string(this->gradeAvarageValueMin) + " - " + std::to_string(this->gradeAvarageValueMax);
+    this->gradeAvarageRange.setString(gradeAvarage);
+
+}
+
 void Program::mouseHoverDetection(){
     for(int i=0; i<this->rows; i++){
         for(int j=0; j<this->lines; j++){
@@ -243,73 +267,56 @@ void Program::mouseHoverDetection(){
 }
 
 bool Program::getGradeFromSingleData(const std::string& singleData, float& min, float& max) const{
-    // "000000r0"
-    //  01234567
-
-    if(singleData[7] != '0'){
+    // only enabled GradeTiles could went in
+    // "10[00000]g0"
+    // enabled locked [expected grade] grade_type grade
+    
+    if(singleData[10] != '0'){
         // known grade
         float grade;
-        switch(singleData[7]){
-            case '1': 
-                grade = 2.f;
-                break;
-            case '2': 
-                grade = 2.5f;
-                break;
-            case '3': 
-                grade = 2.75f;
-                break;
-            case '4': 
-                grade = 3.f;
-                break;
-            case '5': 
-                grade = 3.25f;
-                break;
-            case '6': 
-                grade = 3.5f;
-                break;
-            case '7': 
-                grade = 4.f;
-                break;
-            case '8': 
-                grade = 4.5f;
-                break;
-            case '9':
-                grade = 5.f;
-                break;
+        switch(singleData[10]){
+            case '1': grade = 2.f;   break;
+            case '2': grade = 2.5f;  break;
+            case '3': grade = 2.75f; break;
+            case '4': grade = 3.f;   break;
+            case '5': grade = 3.25f; break;
+            case '6': grade = 3.5f;  break;
+            case '7': grade = 4.f;   break;
+            case '8': grade = 4.5f;  break;
+            case '9': grade = 5.f;   break;
         }
         min = grade;
         max = grade;
         return true;
     }
-    else if(singleData.find("00000",1) != std::string::npos){
+    else if(singleData.find("[00000]",2) != std::string::npos){
         // unknown grade and unknown range
-        // this tiles are not used in avarage grade
+        // this tiles are not used in computing avarage grade
         return false;    
     }
     // unknown grade but known range
     // XD
     min = 3.f;
-    if(singleData[1] == '0'){
+    if(singleData[3] == '0'){
         min = 3.5f;
-        if(singleData[2] == '0'){
+        if(singleData[4] == '0'){
             min = 4.f;
-            if(singleData[3] == '0'){
+            if(singleData[5] == '0'){
                 min = 4.5f;
-                if(singleData[4] == '0'){
+                if(singleData[6] == '0'){
                     min = 5.f;
                 }
             }
         }
     }
     max = 5.f;
-    if(singleData[5] == '0'){
+    if(singleData[7] == '0'){
         max = 4.5f;
-        if(singleData[4] == '0'){
+        if(singleData[6] == '0'){
             max = 4.f;
-            if(singleData[3] == '0'){
+            if(singleData[5] == '0'){
                 max = 3.5f;
-                if(singleData[2] == '0'){
+                if(singleData[4] == '0'){
                     max = 3.f;
                 }
             }
@@ -323,7 +330,8 @@ void Program::computeGradeAvarage(){
     int gradesCount = 0;
     for(int i=0; i<this->rows; i++){
         for(int j=0; j<this->lines; j++){
-            if(this->data[i][j][0] == '+'){
+            if(this->data[i][j][0] == '1'){
+                // only enabled
                 float min,max;
                 if(this->getGradeFromSingleData(data[i][j],min,max)){
                     sumMin += min;
@@ -334,22 +342,24 @@ void Program::computeGradeAvarage(){
             }
         }
     }
-    this->gradeAvarageValueMin = sumMin / gradesCount;
-    this->gradeAvarageValueMax = sumMax / gradesCount;
-    // printf("%.2f - %.2f\n", this->gradeAvarageValueMin, this->gradeAvarageValueMax);
+    if(gradesCount != 0){
+        this->gradeAvarageValueMin = sumMin / gradesCount;
+        this->gradeAvarageValueMax = sumMax / gradesCount;
+    }
+    else{
+        this->gradeAvarageValueMin = 0.f;
+        this->gradeAvarageValueMax = 0.f;
+
+    }
 }
 
 void Program::update(){
     this->pollEvent();
 
     this->mouseHoverDetection();
-    // update this->data depends on tiles data
-    for(int i=0; i<this->rows; i++){
-        for(int j=0; j<this->lines; j++){
-            this->data[i][j] = this->tiles[i][j]->getData();
-        }
-    }
+    this->updateData();
     this->computeGradeAvarage();
+    this->updateText();
 }
 
 void Program::render(){

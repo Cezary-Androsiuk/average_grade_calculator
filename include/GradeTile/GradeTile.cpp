@@ -4,6 +4,7 @@ void GradeTile::init(){
     this->tileType = 1;
 
     this->data.enabled = true;
+    this->data.locked = false;
     for(int i=0; i<5; i++)
         this->data.expectedGrade[i] = false;
     this->data.grade = 0;
@@ -13,7 +14,8 @@ void GradeTile::init(){
     this->mouseHoverTime = 0;
 }
 void GradeTile::interpretData(const std::string& rawData){
-    // "+00111r5"
+    // "10[00000]g0"
+    // enabled locked [expected grade] grade_type grade
     switch (rawData[0]){
     case '1': this->data.enabled = true;
         break;
@@ -22,30 +24,39 @@ void GradeTile::interpretData(const std::string& rawData){
     default: printf("can not interpret '%c' in \"%s\"\n",rawData[0],rawData.c_str());
         break;
     }
-
+    switch (rawData[1]){
+    case '1': this->data.locked = true;
+        break;
+    case '0': this->data.locked = false;
+        break;
+    default: printf("can not interpret '%c' in \"%s\"\n",rawData[1],rawData.c_str());
+        break;
+    }
+    // rawData[2] == '['
     for(int i=0; i<5; i++){
-        switch (rawData[i+1]){
+        switch (rawData[i+3]){
         case '0': this->data.expectedGrade[i] = false;
             break;
         case '1': this->data.expectedGrade[i] = true;
             break;
-        default: printf("can not interpret '%c' in \"%s\"\n",rawData[i+1],rawData.c_str());
+        default: printf("can not interpret '%c' in \"%s\"\n",rawData[i+3],rawData.c_str());
             break;
         }
     }
+    // rawData[8] == ']'
 
-    switch (rawData[6]){
+    switch (rawData[9]){
     case 'g': this->data.grade_type = 1;
         break;
     case 'r': this->data.grade_type = 2;
         break;
     
-    default: printf("can not interpret '%c' in \"%s\"\n",rawData[6],rawData.c_str());
+    default: printf("can not interpret '%c' in \"%s\"\n",rawData[9],rawData.c_str());
         break;
     }
 
 
-    switch (rawData[7]){
+    switch (rawData[10]){
     case '0':
     case '1':
     case '2':
@@ -55,9 +66,9 @@ void GradeTile::interpretData(const std::string& rawData){
     case '6':
     case '7':
     case '8':
-    case '9': this->data.grade = rawData[7]-48;
+    case '9': this->data.grade = rawData[10]-48;
         break;
-    default: printf("can not interpret '%c' in \"%s\"\n",rawData[7],rawData.c_str());
+    default: printf("can not interpret '%c' in \"%s\"\n",rawData[10],rawData.c_str());
         break;
     }
 }
@@ -70,10 +81,8 @@ void GradeTile::initShapes(){
     this->mainShape.setFillColor(sf::Color(175,175,175));
     
     this->grid.setPosition(this->tilePosition);
-    // this->grid.setColor(sf::Color(255,255,255,175));
 
     this->grade.setPosition(sf::Vector2f(this->tilePosition.x + 21.f, this->tilePosition.y + 44.f));
-    // this->grade.setColor(sf::Color(255,255,255,175));
     this->updateGradeTexture();
 
     for(int i=0; i<5; i++){
@@ -183,10 +192,16 @@ void GradeTile::render(sf::RenderTarget* window){
 
 
 std::string GradeTile::getData() const{
+    // "10[00000]g0"
+    // enabled locked [expected grade] grade_type grade
     std::string dataToReturn = "";
     dataToReturn += (this->data.enabled ? '1' : '0');
-    for(int i=0; i<5; i++)
-        dataToReturn += (this->data.expectedGrade[i] ? '1' : '0');
+    dataToReturn += (this->data.locked ? '1' : '0');
+    
+    dataToReturn += '[';
+    for(int i=0; i<5; i++) dataToReturn += (this->data.expectedGrade[i] ? '1' : '0');
+    dataToReturn += ']';
+
     switch (this->data.grade_type){
     case 1: dataToReturn += 'g';
         break;
