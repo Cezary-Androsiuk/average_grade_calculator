@@ -18,7 +18,7 @@ class Program{
     unsigned int windowWidth;
     unsigned int windowHeight;
 
-    sf::Texture gridTexture;
+    sf::Texture tileTemplateTexture;
     sf::Texture expectedGradeTexture;
     sf::Texture currentGradeTexture;
     sf::Font font;

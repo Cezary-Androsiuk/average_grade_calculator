@@ -1,9 +1,9 @@
 -;wyklad;cwiczenia;labolatoria;projekt;
 angielski;10[00101]g0;10[00000]g0;10[00000]g0;10[00000]g0;
 algorytmy i struktury danych;10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;
-analiza matematyczna;10[01011]g1;10[00000]g0;10[00000]g0;10[00000]g0;
-bazy danych;10[00101]g8;10[00000]g0;10[00000]g0;10[00000]g0;
-przedsiebiorczosc;10[01010]g0;10[00000]g0;10[00000]g0;10[00000]g0;
-programowanie zaawansowane;10[01011]g0;10[00000]g0;10[00000]g0;10[00000]g0;
+analiza matematyczna;10[01010]g1;10[00000]g0;10[00000]g0;10[00000]g0;
+bazy danych;10[01010]g6;10[00000]g0;10[00000]g0;10[00000]g0;
+przedsiebiorczosc;10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;
+programowanie zaawansowane;10[01010]g0;10[00000]g0;10[00000]g0;10[11111]g0;
 rownania rozniczkowe i roznicowe;10[01101]g0;10[00000]g0;10[00000]g0;10[00000]g0;
 systemy operacyjne;10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;

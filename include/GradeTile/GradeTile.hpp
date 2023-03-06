@@ -6,7 +6,7 @@
 class GradeTile : public Tile{
 
     sf::FloatRect mouseUpdateAreaOnTile[6] ={
-        sf::FloatRect(0.f, 0.f, 25.f, 18.f),
+        sf::FloatRect(1.f, 0.f, 25.f, 18.f),
         sf::FloatRect(25.f, 0.f, 24.f, 18.f),
         sf::FloatRect(49.f, 0.f, 24.f, 18.f),
         sf::FloatRect(73.f, 0.f, 24.f, 18.f),
@@ -23,7 +23,7 @@ class GradeTile : public Tile{
     } data;
     int mouseHoverOnPart; // 0 none, 1-5 expectedGrade, 6 grade
 
-    sf::Sprite grid;
+    sf::Sprite tileTemplate;
     sf::Sprite currentGrade;
     sf::Sprite expectedGrade[5];
 
@@ -36,7 +36,7 @@ public:
     GradeTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Texture&, const sf::Texture&, const sf::Texture&);
     ~GradeTile();
 
-    void updateGridTexture();
+    void updateTileTemplateTexture();
     void updateExpectedGradeTexture();
     void updateCurrentGradeTexture();
 

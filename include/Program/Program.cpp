@@ -1,12 +1,12 @@
 #include "Program.hpp"
 
 void Program::loadSources(){
-    if(!this->gridTexture.loadFromFile("sources/GradeTile_template.bmp")){
+    if(!this->tileTemplateTexture.loadFromFile("sources/GradeTile_template.bmp")){
         std::cin.get();
         exit(0);
     }
-    this->gridTexture.setSmooth(false);
-    this->gridTexture.setRepeated(false);
+    this->tileTemplateTexture.setSmooth(false);
+    this->tileTemplateTexture.setRepeated(false);
 
     
     if(!this->expectedGradeTexture.loadFromFile("sources/expected_grade.bmp")){
@@ -106,7 +106,7 @@ void Program::initShapes(){
                     TILE_SIZE,
                     TILE_POSITION, 
                     this->data[i][j], 
-                    this->gridTexture,
+                    this->tileTemplateTexture,
                     this->expectedGradeTexture,
                     this->currentGradeTexture
                     );

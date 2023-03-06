@@ -17,28 +17,24 @@ void GradeTile::interpretData(const std::string& rawData){
     // "10[00000]g0"
     // enabled locked [expected grade] grade_type grade
     switch (rawData[0]){
-    case '1': this->data.enabled = true;
-        break;
-    case '0': this->data.enabled = false;
-        break;
+    case '1': this->data.enabled = true; break;
+    case '0': this->data.enabled = false; break;
     default: printf("can not interpret '%c' in \"%s\"\n",rawData[0],rawData.c_str());
         break;
     }
+
     switch (rawData[1]){
-    case '1': this->data.locked = true;
-        break;
-    case '0': this->data.locked = false;
-        break;
+    case '1': this->data.locked = true; break;
+    case '0': this->data.locked = false; break;
     default: printf("can not interpret '%c' in \"%s\"\n",rawData[1],rawData.c_str());
         break;
     }
+
     // rawData[2] == '['
     for(int i=0; i<5; i++){
         switch (rawData[i+3]){
-        case '0': this->data.expectedGrade[i] = false;
-            break;
-        case '1': this->data.expectedGrade[i] = true;
-            break;
+        case '0': this->data.expectedGrade[i] = false; break;
+        case '1': this->data.expectedGrade[i] = true; break;
         default: printf("can not interpret '%c' in \"%s\"\n",rawData[i+3],rawData.c_str());
             break;
         }
@@ -46,62 +42,42 @@ void GradeTile::interpretData(const std::string& rawData){
     // rawData[8] == ']'
 
     switch (rawData[9]){
-    case 'g': this->data.grade_type = 1;
-        break;
-    case 'r': this->data.grade_type = 2;
-        break;
-    
+    case 'g': this->data.grade_type = 1; break;
+    case 'r': this->data.grade_type = 2; break;
     default: printf("can not interpret '%c' in \"%s\"\n",rawData[9],rawData.c_str());
         break;
     }
 
-
-    switch (rawData[10]){
-    case '0':
-    case '1':
-    case '2':
-    case '3':
-    case '4':
-    case '5':
-    case '6':
-    case '7':
-    case '8':
-    case '9': this->data.grade = rawData[10]-48;
-        break;
-    default: printf("can not interpret '%c' in \"%s\"\n",rawData[10],rawData.c_str());
-        break;
-    }
+    if('0' <= rawData[10] && rawData[10] <= '9') this->data.grade = rawData[10] - 48;
+    else printf("can not interpret '%c' in \"%s\"\n",rawData[10],rawData.c_str());
 }
-void GradeTile::initTextures(const sf::Texture& gridTexture, const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture){
-    this->grid.setTexture(gridTexture);
+void GradeTile::initTextures(const sf::Texture& tileTemplateTexture, const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture){
+    this->tileTemplate.setTexture(tileTemplateTexture);
     for(int i=0; i<5; i++) this->expectedGrade[i].setTexture(expectedGradeTexture);
     this->currentGrade.setTexture(currentGradeTexture);
 }
 void GradeTile::initShapes(){
-    this->mainShape.setFillColor(sf::Color(175,175,175));
+    this->mainShape.setFillColor(sf::Color(0,0,0));
     
-    this->grid.setPosition(this->tilePosition);
-    this->updateGridTexture();
+    this->tileTemplate.setPosition(this->localPosition_to_globalPosition(sf::Vector2f(0.f, 0.f)));
+    this->updateTileTemplateTexture();
 
-    for(int i=0; i<5; i++){
-        this->expectedGrade[i].setPosition(
-            sf::Vector2f(
-                this->mouseUpdateAreaOnTile[i].left + this->tilePosition.x + 1,
-                this->mouseUpdateAreaOnTile[i].top + this->tilePosition.y + 1
-            )
-        );
-    }
+
+    for(int i=0; i<5; i++)
+        this->expectedGrade[i].setPosition(this->localPosition_to_globalPosition(sf::Vector2f(this->mouseUpdateAreaOnTile[i].left + 1.f, 2.f)));
     this->updateExpectedGradeTexture();
 
-    this->currentGrade.setPosition(sf::Vector2f(this->tilePosition.x + 21.f, this->tilePosition.y + 44.f));
+
+    this->currentGrade.setPosition(this->localPosition_to_globalPosition(sf::Vector2f(21.f, 44.f)));
     this->updateCurrentGradeTexture();
 }
 
 
-GradeTile::GradeTile(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& rawData, const sf::Texture& gridTexture, const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture) : Tile(size, position){
+GradeTile::GradeTile(const sf::Vector2f& size, const sf::Vector2f& position, const std::string& rawData, const sf::Texture& tileTemplateTexture, 
+const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture) : Tile(size, position){
     this->init();
     this->interpretData(rawData);
-    this->initTextures(gridTexture, expectedGradeTexture, currentGradeTexture);
+    this->initTextures(tileTemplateTexture, expectedGradeTexture, currentGradeTexture);
     this->initShapes();
 }
 GradeTile::~GradeTile(){
@@ -109,23 +85,23 @@ GradeTile::~GradeTile(){
 }
 
 
-void GradeTile::updateGridTexture(){
-    this->grid.setTextureRect(
+void GradeTile::updateTileTemplateTexture(){
+    this->tileTemplate.setTextureRect(
         sf::IntRect(
             sf::Vector2i(this->data.locked*122, 0), 
             sf::Vector2i(122, 122)
-            )
-        );
+        )
+    );
 }
 
 void GradeTile::updateExpectedGradeTexture(){
     for(int i=0; i<5; i++)
         this->expectedGrade[i].setTextureRect(
             sf::IntRect(
-                sf::Vector2i(22.f*i, 0.f),
-                sf::Vector2i(22.f, 14.f)
-            )
-        );
+                sf::Vector2i(22*i, this->data.expectedGrade[i] * 14),
+                sf::Vector2i(22, 14)
+        )
+    );
 }
 
 void GradeTile::updateCurrentGradeTexture(){
@@ -133,8 +109,8 @@ void GradeTile::updateCurrentGradeTexture(){
         sf::IntRect(
             sf::Vector2i(this->data.grade*80, 0), 
             sf::Vector2i(80, 50)
-            )
-        );
+        )
+    );
 }
 
 void GradeTile::mouseLeftPressed(){
@@ -148,6 +124,7 @@ void GradeTile::mouseLeftPressed(){
     case 4:
     case 5:
         this->data.expectedGrade[this->mouseHoverOnPart-1] = (this->data.expectedGrade[this->mouseHoverOnPart-1] ? false : true);
+        this->updateExpectedGradeTexture();
         break;
     
     case 6:
@@ -158,7 +135,7 @@ void GradeTile::mouseLeftPressed(){
 void GradeTile::mouseRightPressed(){
     if(!this->data.enabled)
         return;
-    // lock/unlock
+    
     switch (this->mouseHoverOnPart){
     case 1: break;
     case 2: break;
@@ -167,12 +144,11 @@ void GradeTile::mouseRightPressed(){
     case 5: break;
     case 6:
         this->data.locked = (this->data.locked ? false : true);
-        this->updateGridTexture();
+        this->updateTileTemplateTexture();
         break;
     }
 }
 void GradeTile::mouseMiddlePressed(){
-    // enable/disable
     switch (this->mouseHoverOnPart){
     case 1:
     case 2:
@@ -214,10 +190,9 @@ void GradeTile::update(){
 void GradeTile::render(sf::RenderTarget* window){
     if(this->data.enabled){
         // window->draw(this->mainShape);
-        window->draw(this->grid);
+        window->draw(this->tileTemplate);
         for(int i=0; i<5; i++)
-            if(this->data.expectedGrade[i])
-                window->draw(this->expectedGrade[i]);
+            window->draw(this->expectedGrade[i]);
         window->draw(this->currentGrade);
     }
 }
@@ -235,12 +210,9 @@ std::string GradeTile::getData() const{
     dataToReturn += ']';
 
     switch (this->data.grade_type){
-    case 1: dataToReturn += 'g';
-        break;
-    case 2: dataToReturn += 'r';
-        break;
-    default:
-        break;
+    case 1: dataToReturn += 'g'; break;
+    case 2: dataToReturn += 'r'; break;
+    default: break;
     }
     dataToReturn += this->data.grade + 48;
     return dataToReturn;
