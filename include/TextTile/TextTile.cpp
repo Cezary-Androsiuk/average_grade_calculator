@@ -29,6 +29,28 @@ TextTile::~TextTile(){
 
 }
 
+std::vector<sf::Text> adjustTextInField(const sf::FloatRect& field, const sf::Text& orgtext){
+    std::vector<sf::Text> text_vector;
+    std::wstring wtext(orgtext.getString());
+    std::wstring tmp;
+    for(wchar_t i : wtext){
+        if(i != L' ')
+            tmp += i;
+        else{
+            text_vector.push_back(sf::Text(tmp, *orgtext.getFont(), orgtext.getCharacterSize()));
+            tmp.clear();
+        }
+    }
+
+    for(int i=0; i<text_vector.size(); i++){
+        text_vector[i].setPosition(sf::Vector2f(
+            field.left + (field.width - text_vector[i].getGlobalBounds().width)/2,
+            field.top + orgtext.getCharacterSize() * i + 2.f
+        ));
+    }
+
+    return text_vector;
+}
 
 void TextTile::mouseLeftPressed(){
 

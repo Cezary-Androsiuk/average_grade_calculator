@@ -2,7 +2,7 @@
 
 EmptyTile::EmptyTile(const sf::Vector2f& size,const sf::Vector2f& position) : Tile(size, position){
     this->tileType = 3;
-    // this->mainShape.setFillColor(sf::Color(200,200,200));
+    // this->mainShape.setFillColor(sf::Color(100,100,100));
 }
 EmptyTile::~EmptyTile(){
     

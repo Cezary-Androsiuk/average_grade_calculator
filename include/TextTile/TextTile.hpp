@@ -10,6 +10,7 @@ class TextTile : public Tile{
     // std::string sName;
 
     sf::Text text;
+    std::vector<sf::Text> text_vector;
 
     void init();
     void interpretData(const std::string&);
@@ -19,6 +20,7 @@ public:
     TextTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Font&);
     ~TextTile();
 
+    std::vector<sf::Text> adjustTextInField(const sf::FloatRect&, const sf::Text&);
 
     void mouseLeftPressed();
     void mouseRightPressed();
