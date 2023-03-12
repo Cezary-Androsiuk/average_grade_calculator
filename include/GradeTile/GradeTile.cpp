@@ -217,7 +217,7 @@ std::string GradeTile::getData() const{
     dataToReturn += this->data.grade + 48;
     return dataToReturn;
 }
-void GradeTile::mouseHoverInfo(const sf::Vector2f& mousePos){
+void GradeTile::mouseHoverUpdate(const sf::Vector2f& mousePos){
     if(this->mainShape.getGlobalBounds().contains(mousePos)){
         this->mouseHoverTime++;
         // detect above what part mouse is hovering (nice inglisz)

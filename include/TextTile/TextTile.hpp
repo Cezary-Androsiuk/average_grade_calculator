@@ -5,22 +5,20 @@
 
 
 class TextTile : public Tile{
-    std::string name;
-    // std::wstring name;
-    // std::string sName;
+    std::string data;
 
-    sf::Text text;
-    std::vector<sf::Text> text_vector;
+    std::vector<sf::Text*> text_vector;
+    unsigned int charSize;
 
     void init();
     void interpretData(const std::string&);
-    void initText(const sf::Font&);
+    void initText(const sf::Font&, const unsigned int&);
     void initShape();
 public:
-    TextTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Font&);
+    TextTile(const sf::Vector2f&, const sf::Vector2f&, const std::string&, const sf::Font&, const unsigned int&);
     ~TextTile();
 
-    std::vector<sf::Text> adjustTextInField(const sf::FloatRect&, const sf::Text&);
+    void updateTextPosition();
 
     void mouseLeftPressed();
     void mouseRightPressed();
@@ -34,7 +32,7 @@ public:
 
     std::string getData() const;
 
-    void mouseHoverInfo(const sf::Vector2f&);
+    void mouseHoverUpdate(const sf::Vector2f&);
 };
 
 #endif

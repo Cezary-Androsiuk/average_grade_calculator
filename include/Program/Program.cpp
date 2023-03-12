@@ -41,6 +41,7 @@ void Program::initData(){
         std::cin.get();
         exit(0);
     }
+
     std::string line;
     while(getline(file,line)){
         std::vector<std::string> line_of_data;
@@ -115,7 +116,8 @@ void Program::initShapes(){
                     TILE_SIZE,
                     TILE_POSITION,
                     this->data[i][j], 
-                    this->font
+                    this->font,
+                    10
                     );
         }
     }
@@ -262,7 +264,7 @@ void Program::updateText(){
 void Program::mouseHoverDetection(){
     for(int i=0; i<this->rows; i++){
         for(int j=0; j<this->lines; j++){
-            this->tiles[i][j]->mouseHoverInfo(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
+            this->tiles[i][j]->mouseHoverUpdate(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)));
         }
     }
 }

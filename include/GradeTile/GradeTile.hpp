@@ -51,7 +51,7 @@ public:
     
     std::string getData() const;
 
-    void mouseHoverInfo(const sf::Vector2f&);
+    void mouseHoverUpdate(const sf::Vector2f&);
 };
 
 #endif

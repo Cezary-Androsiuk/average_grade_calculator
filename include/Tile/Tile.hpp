@@ -33,7 +33,7 @@ public:
     virtual void render(sf::RenderTarget*) = 0;
 
     virtual std::string getData() const = 0;
-    virtual void mouseHoverInfo(const sf::Vector2f& mousePos) = 0;
+    virtual void mouseHoverUpdate(const sf::Vector2f& mousePos) = 0;
 };
 
 #endif
