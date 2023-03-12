@@ -130,12 +130,16 @@ void Program::initShapes(){
     this->gradeAvarageName.setFont(this->font);
     this->gradeAvarageName.setString(L"Możliwa Średnia Ocen");
     this->gradeAvarageName.setCharacterSize(20);
-    this->gradeAvarageName.setFillColor(sf::Color(255,255,255));
+    this->gradeAvarageName.setFillColor(sf::Color(200,200,200));
     this->gradeAvarageName.setPosition(sf::Vector2f(0.f,20.f));
+    this->gradeAvarageName.setPosition(sf::Vector2f(
+        ( (float)this->windowWidth - this->gradeAvarageName.getGlobalBounds().width)/2,
+        this->gradeAvarageName.getPosition().y));
     
     this->gradeAvarageRange.setFont(this->font);
-    this->gradeAvarageRange.setString("0.00 - 0.00");
-    this->gradeAvarageRange.setCharacterSize(20);
+    this->gradeAvarageRange.setString("0.00");
+    this->gradeAvarageRange.setCharacterSize(28);
+    this->gradeAvarageRange.setStyle(sf::Text::Bold);
     this->gradeAvarageRange.setFillColor(sf::Color(255,255,255));
     this->gradeAvarageRange.setPosition(sf::Vector2f(0.f,50.f));
 
@@ -150,11 +154,6 @@ void Program::initShapes(){
     this->resetButtonText.setString("RESET");
     this->resetButtonText.setCharacterSize(16);
     this->resetButtonText.setFillColor(sf::Color(160,160,160));
-    // this->resetButtonText.setStyle(sf::Text::Bold);
-    // this->resetButtonText.setPosition(sf::Vector2f(
-    //     this->resetButton.getGlobalBounds().left + 16.f,
-    //     this->resetButton.getGlobalBounds().top + 16.f
-    // ));
     this->resetButtonText.setPosition(sf::Vector2f(
         this->resetButton.getGlobalBounds().left + 18.f,
         this->resetButton.getGlobalBounds().top + 16.f
@@ -322,15 +321,19 @@ void Program::updateData(){
 }
 
 void Program::updateText(){
-    this->gradeAvarageName.setPosition(sf::Vector2f(
-        ( (float)this->windowWidth - this->gradeAvarageName.getGlobalBounds().width)/2,
-        this->gradeAvarageName.getPosition().y));
+    if(this->gradeAvarageValueMin != this->gradeAvarageValueMax)
+        this->gradeAvarageRange.setString(
+            std::to_string(
+                this->gradeAvarageValueMin).substr(0,4) + 
+                " - " + 
+                std::to_string(this->gradeAvarageValueMax).substr(0,4));
+    else
+        this->gradeAvarageRange.setString(std::to_string(this->gradeAvarageValueMin).substr(0,4));
+
     this->gradeAvarageRange.setPosition(sf::Vector2f(
         ( (float)this->windowWidth - this->gradeAvarageRange.getGlobalBounds().width)/2,
         this->gradeAvarageRange.getPosition().y));
-
-    std::string gradeAvarage = std::to_string(this->gradeAvarageValueMin) + " - " + std::to_string(this->gradeAvarageValueMax);
-    this->gradeAvarageRange.setString(gradeAvarage);
+    
 
 }
 
