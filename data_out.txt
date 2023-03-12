@@ -1,9 +1,0 @@
-nazwa;wykład;ćwiczenia;labolatoria;projekt;
-angielski;-00000g0;+01100r4;-00000g0;-00000g0;
-algorytmy i struktury danych;-01111r3;+00111r5;-00000g0;-00000g0;
-analiza matematyczna;-11100r4;-11100r4;-00000g0;-00000g0;
-bazy danych;+11111r3;-00000g0;+00111r5;-00000g0;
-przedsiębiorczość;-00000g0;-00000g0;-00000g0;-00000g0;
-programowanie zaawansowane;-00000g0;-00000g0;-00000g0;-00000g0;
-równania różniczkowe i różnicowe;-00000g0;-00000g0;-00000g0;-00000g0;
-systemy operacyjne;-00000g0;-00000g0;-00000g0;-00000g0;
