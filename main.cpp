@@ -12,9 +12,10 @@ int main(){
 
 /*
 
-TODO grade value 1/4  &  3/4 
-TODO colors upgrade
-TODO avarage grade print
-TODO text center and split
+TODO grade value 1/4  &  3/4 change to grade 2 in first term
+TODO grade type
+TODO avarage grade print with 2 spaces after dot
+TODO reset all button
+TODO text height center
 
 */

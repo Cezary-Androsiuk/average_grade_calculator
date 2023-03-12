@@ -72,18 +72,18 @@ void TextTile::mouseMiddlePressed(){
 }
 void TextTile::mouseWheelMovedUp(){
     if(this->mouseHoverTime){
-        printf("text char Size: %d\n", this->charSize);
         if(this->charSize < 100)
-        this->charSize++;
+            this->charSize++;
         this->updateTextPosition();
+        printf("current text char Size: %d\n", this->charSize);
     }
 }
 void TextTile::mouseWheelMovedDown(){
     if(mouseHoverTime){
-        printf("text char Size: %d\n", this->charSize);
         if(this->charSize > 1)
             this->charSize--;
         this->updateTextPosition();
+        printf("currenttext char Size: %d\n", this->charSize);
     }
 }
 void TextTile::keyboardKeys(const sf::Keyboard::Key&){

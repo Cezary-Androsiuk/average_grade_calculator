@@ -1,9 +1,9 @@
--;wyklad(30);cwiczenia(27);labolatoria(22);projekt(31);
-angielski(24);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;
-algorytmy i struktury danych(23);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;
-analiza matematyczna(17);10[00111]g1;10[00000]g0;10[00000]g0;10[00000]g0;
-bazy danych(25);10[01000]g8;10[00000]g0;10[00000]g0;10[00000]g0;
-przedsiebiorczosc(14);10[00000]g4;10[00000]g0;10[00000]g0;10[00000]g0;
-programowanie zaawansowane(16);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;
-rownania rozniczkowe i roznicowe(20);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;
-systemy operacyjne(22);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;
+-;wyklad(33);cwiczenia(27);labolatoria(25);projekt(31);
+angielski(24);00[00000]g0;10[11100]g0;00[00000]g0;00[00000]g0;
+grafika i komunikacja czlowiek komputer(21);10[11111]g0;10[00011]g0;00[00000]g0;00[00000]g0;
+inzynieria oprogramowania(15);10[00111]g0;00[00000]g0;00[00000]g0;00[00000]g0;
+metody obliczeniowe(20);10[11111]g0;00[00000]g0;10[00011]g0;00[00000]g0;
+metody propabilistyczne i statystyka(15);10[10000]g0;10[10000]g0;10[11100]g0;00[00000]g0;
+programowanie w internecie(16);10[11111]g0;00[00000]g0;10[00111]g0;10[00001]g0;
+programowanie w srodowiskach graficznych(16);10[11111]g0;00[00000]g0;10[00011]g0;00[00000]g0;
+technologie sieciowe(21);10[11111]g0;00[00000]g0;10[00111]g0;00[00000]g0;
