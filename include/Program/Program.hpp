@@ -23,6 +23,15 @@ class Program{
     sf::Texture currentGradeTexture;
     sf::Font font;
 
+    sf::RectangleShape resetButton;
+    int resetButtonCounter;
+    int resetButtonTimer;
+    sf::Text resetButtonText;
+    sf::Text resetButtonCounterText;
+    bool resetButtonCounterTextVisible;
+    bool dataShouldBeCleared;
+
+
     float gradeAvarageValueMin;
     float gradeAvarageValueMax;
     sf::Text gradeAvarageName;
@@ -35,6 +44,7 @@ class Program{
     void initWindow();
     
     void delShapes();
+    void clearData();
     void saveData();
     void deleteData();
 public:
@@ -45,6 +55,7 @@ public:
     
     void updateData();
     void updateText();
+    void updateResetButton();
     void mouseHoverDetection();
     bool getGradeFromSingleData(const std::string&, float&, float&) const;
     void computeGradeAvarage();

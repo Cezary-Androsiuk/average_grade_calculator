@@ -30,6 +30,11 @@ void Program::loadSources(){
 }
 
 void Program::initData(){
+    this->resetButtonCounter = RESET_BUTTON_NEEDED_ACTIONS_COUNT;
+    this->resetButtonTimer = 0;
+    this->resetButtonCounterTextVisible = false;
+    this->dataShouldBeCleared = false;
+
     this->gradeAvarageValueMin = 0.f;
     this->gradeAvarageValueMax = 0.f;
 
@@ -133,6 +138,36 @@ void Program::initShapes(){
     this->gradeAvarageRange.setCharacterSize(20);
     this->gradeAvarageRange.setFillColor(sf::Color(255,255,255));
     this->gradeAvarageRange.setPosition(sf::Vector2f(0.f,50.f));
+
+    this->resetButton.setSize(sf::Vector2f(80.f,50.f));
+    this->resetButton.setPosition(sf::Vector2f(
+        this->windowWidth - 10.f - this->resetButton.getSize().x,
+        this->windowHeight - 10.f - this->resetButton.getSize().y
+        ));
+    this->resetButton.setFillColor(sf::Color(40,40,40));
+
+    this->resetButtonText.setFont(this->font);
+    this->resetButtonText.setString("RESET");
+    this->resetButtonText.setCharacterSize(16);
+    this->resetButtonText.setFillColor(sf::Color(160,160,160));
+    // this->resetButtonText.setStyle(sf::Text::Bold);
+    // this->resetButtonText.setPosition(sf::Vector2f(
+    //     this->resetButton.getGlobalBounds().left + 16.f,
+    //     this->resetButton.getGlobalBounds().top + 16.f
+    // ));
+    this->resetButtonText.setPosition(sf::Vector2f(
+        this->resetButton.getGlobalBounds().left + 18.f,
+        this->resetButton.getGlobalBounds().top + 16.f
+    ));
+
+    this->resetButtonCounterText.setFont(this->font);
+    this->resetButtonCounterText.setString("5");
+    this->resetButtonCounterText.setCharacterSize(16);
+    this->resetButtonCounterText.setFillColor(sf::Color(160,160,160));
+    this->resetButtonCounterText.setPosition(sf::Vector2f(
+        this->resetButton.getGlobalBounds().left + 36.f,
+        this->resetButton.getGlobalBounds().top + 25.f
+    ));
 }
 
 void Program::initWindow(){
@@ -154,12 +189,31 @@ void Program::delShapes(){
     delete [] this->tiles;
 }
 
+void Program::clearData(){
+    std::fstream file;
+    file.open(DATA_FILE, std::ios::out);
+    if(!file.good()){
+        printf("can't open data file in path %s!\n",DATA_FILE);
+        this->deleteData();
+        return;
+    }
+
+    file << "-;?(16);?(16);?(16);?(16);\n";
+    file << "?(16);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;\n";
+    file << "?(16);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;\n";
+    file << "?(16);10[00000]g0;10[00000]g0;10[00000]g0;10[00000]g0;\n";
+
+    file.close();
+
+    this->deleteData();
+}
+
 void Program::saveData(){
     // save to file
     std::fstream file;
     file.open(DATA_FILE, std::ios::out);
     if(!file.good()){
-        printf("can't save data to %s!\n",DATA_FILE);
+        printf("can't open data file in path %s!\n",DATA_FILE);
         this->deleteData();
         return;
     }
@@ -190,7 +244,13 @@ Program::Program(){
 
 Program::~Program(){
     this->delShapes();
-    this->saveData();
+    if(this->dataShouldBeCleared){
+        this->clearData();
+        printf("Data was cleared correctly! Now you can adjust text in file.\n");
+    }
+    else{
+        this->saveData();
+    }
     delete this->window;
     printf("Application closed correctly!\n");
 }
@@ -204,24 +264,37 @@ void Program::pollEvent(){
         case sf::Event::KeyPressed:
             if(this->currentEvent.key.code == sf::Keyboard::Escape)
                 this->window->close();
-            // else 
-            //     for(int i=0; i<this->rows; i++){
-            //         for(int j=0; j<this->lines; j++){
-            //             this->tiles[i][j]->keyboardKeys(this->currentEvent.key.code);
-            //         }
-            //     }
             break;
         case sf::Event::MouseButtonPressed:
-            for(int i=0; i<this->rows; i++){
-                for(int j=0; j<this->lines; j++){
-                    if(this->currentEvent.mouseButton.button == sf::Mouse::Left)
+            if(this->currentEvent.mouseButton.button == sf::Mouse::Left){
+                for(int i=0; i<this->rows; i++)
+                    for(int j=0; j<this->lines; j++)
                         this->tiles[i][j]->mouseLeftPressed();
-                    else if(this->currentEvent.mouseButton.button == sf::Mouse::Right)
-                        this->tiles[i][j]->mouseRightPressed();
-                    else if(this->currentEvent.mouseButton.button == sf::Mouse::Middle)
-                        this->tiles[i][j]->mouseMiddlePressed();    
+                
+                // reset button
+                if(this->resetButton.getGlobalBounds().contains(this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window)))){
+                    this->resetButtonCounter--;
+                    this->resetButtonTimer = 0;
+                    if(this->resetButtonCounter == 0){
+                        this->resetButtonCounter = RESET_BUTTON_NEEDED_ACTIONS_COUNT;
+                        // reset ALL function
+                        printf("RESET!\n");
+                        this->dataShouldBeCleared = true;
+                        this->window->close();
+                    }
                 }
             }
+            else if(this->currentEvent.mouseButton.button == sf::Mouse::Right){
+                for(int i=0; i<this->rows; i++)
+                    for(int j=0; j<this->lines; j++)
+                        this->tiles[i][j]->mouseRightPressed();
+            }
+            else if(this->currentEvent.mouseButton.button == sf::Mouse::Middle){
+                for(int i=0; i<this->rows; i++)
+                    for(int j=0; j<this->lines; j++)
+                        this->tiles[i][j]->mouseMiddlePressed();    
+            }
+                
             break;
         case sf::Event::MouseWheelMoved:
             for(int i=0; i<this->rows; i++){
@@ -259,6 +332,31 @@ void Program::updateText(){
     std::string gradeAvarage = std::to_string(this->gradeAvarageValueMin) + " - " + std::to_string(this->gradeAvarageValueMax);
     this->gradeAvarageRange.setString(gradeAvarage);
 
+}
+
+void Program::updateResetButton(){
+    if(this->resetButtonCounter < RESET_BUTTON_NEEDED_ACTIONS_COUNT){
+        this->resetButtonTimer++;
+        if(this->resetButtonTimer >= RESET_BUTTON_TIME){
+            this->resetButtonTimer = 0;
+            this->resetButtonCounter++;
+        }
+        this->resetButtonText.setPosition(sf::Vector2f(
+            this->resetButton.getGlobalBounds().left + 18.f,
+            this->resetButton.getGlobalBounds().top + 7.f
+        ));
+        this->resetButtonCounterTextVisible = true;
+        if(this->resetButtonCounter < RESET_BUTTON_NEEDED_ACTIONS_COUNT)
+            this->resetButtonCounterText.setString(std::to_string(this->resetButtonCounter));
+    }
+    else{
+        this->resetButtonText.setPosition(sf::Vector2f(
+            this->resetButton.getGlobalBounds().left + 18.f,
+            this->resetButton.getGlobalBounds().top + 16.f
+        ));
+        this->resetButtonCounterTextVisible = false;
+    }
+    
 }
 
 void Program::mouseHoverDetection(){
@@ -363,6 +461,7 @@ void Program::update(){
     this->updateData();
     this->computeGradeAvarage();
     this->updateText();
+    this->updateResetButton();
 }
 
 void Program::render(){
@@ -376,6 +475,11 @@ void Program::render(){
 
     this->window->draw(this->gradeAvarageName);
     this->window->draw(this->gradeAvarageRange);
+
+    this->window->draw(this->resetButton);
+    this->window->draw(this->resetButtonText);
+    if(this->resetButtonCounterTextVisible)
+        this->window->draw(this->resetButtonCounterText);
 
     this->window->display();
 }
