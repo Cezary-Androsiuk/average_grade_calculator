@@ -8,7 +8,7 @@ void GradeTile::init(){
     for(int i=0; i<5; i++)
         this->data.expectedGrade[i] = false;
     this->data.grade = 0;
-    this->data.grade_type = 0;
+    this->data.grade_type = 1;
     
     this->mouseHoverOnPart = 0;
     this->mouseHoverTime = 0;
@@ -107,7 +107,7 @@ void GradeTile::updateExpectedGradeTexture(){
 void GradeTile::updateCurrentGradeTexture(){
     this->currentGrade.setTextureRect(
         sf::IntRect(
-            sf::Vector2i(this->data.grade*80, 0), 
+            sf::Vector2i(this->data.grade * 80, this->data.grade_type * 50), 
             sf::Vector2i(80, 50)
         )
     );
@@ -128,7 +128,12 @@ void GradeTile::mouseLeftPressed(){
         break;
     
     case 6:
-        printf("grade tile left\n");
+        if(this->data.grade_type >= MAX_GRADE_TYPE)
+            this->data.grade_type = 1;
+        else
+            this->data.grade_type++;
+        
+        this->updateCurrentGradeTexture();
         break;
     }
 }

@@ -1,4 +1,4 @@
--;wyklad(33);cwiczenia(27);labolatoria(25);projekt(31);
+-;wyklad(30);cwiczenia(27);labolatoria(25);projekt(31);
 angielski(24);00[00000]g0;10[11100]g0;00[00000]g0;00[00000]g0;
 grafika i komunikacja czlowiek komputer(21);10[11111]g0;10[00011]g0;00[00000]g0;00[00000]g0;
 inzynieria oprogramowania(14);10[00111]g0;00[00000]g0;00[00000]g0;00[00000]g0;

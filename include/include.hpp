@@ -19,6 +19,8 @@
 #define TILE_HEIGHT 122.f
 #define TILE_SIZE sf::Vector2f(TILE_WIDTH, TILE_HEIGHT)
 
+#define MAX_GRADE_TYPE 2
+
 #define TILE_SEPARATOR 2.f
 
 #define WINDOW_TOP_MARGIN 100.f
