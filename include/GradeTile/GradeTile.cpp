@@ -1,7 +1,7 @@
 #include "GradeTile.hpp"
 
 void GradeTile::init(){
-    this->tileType = 1;
+    this->tileType = 0;
 
     this->data.enabled = true;
     this->data.locked = false;
@@ -41,14 +41,10 @@ void GradeTile::interpretData(const std::string& rawData){
     }
     // rawData[8] == ']'
 
-    switch (rawData[9]){
-    case 'g': this->data.grade_type = 1; break;
-    case 'r': this->data.grade_type = 2; break;
-    default: printf("can not interpret '%c' in \"%s\"\n",rawData[9],rawData.c_str());
-        break;
-    }
+    if('0' <= rawData[9] && rawData[9] <= (MAX_GRADE_TYPE + 48)) this->data.grade_type = rawData[9] - 48; // less than 10
+    else printf("can not interpret '%c' in \"%s\"\n",rawData[9],rawData.c_str());
 
-    if('0' <= rawData[10] && rawData[10] <= '9') this->data.grade = rawData[10] - 48;
+    if('0' <= rawData[10] && rawData[10] <= '9') this->data.grade = rawData[10] - 48; // less than 10
     else printf("can not interpret '%c' in \"%s\"\n",rawData[10],rawData.c_str());
 }
 void GradeTile::initTextures(const sf::Texture& tileTemplateTexture, const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture){
@@ -129,7 +125,7 @@ void GradeTile::mouseLeftPressed(){
     
     case 6:
         if(this->data.grade_type >= MAX_GRADE_TYPE)
-            this->data.grade_type = 1;
+            this->data.grade_type = 0;
         else
             this->data.grade_type++;
         
@@ -214,12 +210,8 @@ std::string GradeTile::getData() const{
     for(int i=0; i<5; i++) dataToReturn += (this->data.expectedGrade[i] ? '1' : '0');
     dataToReturn += ']';
 
-    switch (this->data.grade_type){
-    case 1: dataToReturn += 'g'; break;
-    case 2: dataToReturn += 'r'; break;
-    default: break;
-    }
-    dataToReturn += this->data.grade + 48;
+    dataToReturn += this->data.grade_type + 48; // less than 10
+    dataToReturn += this->data.grade + 48; // less than 10
     return dataToReturn;
 }
 void GradeTile::mouseHoverUpdate(const sf::Vector2f& mousePos){

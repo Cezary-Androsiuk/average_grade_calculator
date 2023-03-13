@@ -1,9 +1,9 @@
 -;wyklad(30);cwiczenia(27);labolatoria(25);projekt(31);
-angielski(24);00[00000]g0;10[11100]g0;00[00000]g0;00[00000]g0;
-grafika i komunikacja czlowiek komputer(21);10[11111]g0;10[00011]g0;00[00000]g0;00[00000]g0;
-inzynieria oprogramowania(14);10[00111]g0;00[00000]g0;00[00000]g0;00[00000]g0;
-metody obliczeniowe(20);10[11111]g0;00[00000]g0;10[00011]g0;00[00000]g0;
-metody propabilistyczne i statystyka(15);10[10000]g0;10[10000]g0;10[11100]g0;00[00000]g0;
-programowanie w internecie(16);10[11111]g0;00[00000]g0;10[00111]g0;10[00001]g0;
-programowanie w srodowiskach graficznych(16);10[11111]g0;00[00000]g0;10[00011]g0;00[00000]g0;
-technologie sieciowe(21);10[11111]g0;00[00000]g0;10[00111]g0;00[00000]g0;
+angielski(24);00[00000]00;10[11100]00;00[00000]00;00[00000]00;
+grafika i komunikacja czlowiek komputer(21);10[11111]00;10[00011]00;00[00000]00;00[00000]00;
+inzynieria oprogramowania(14);10[00111]00;00[00000]00;00[00000]00;00[00000]00;
+metody obliczeniowe(20);10[11111]00;00[00000]00;10[00011]00;00[00000]00;
+metody propabilistyczne i statystyka(15);10[10000]00;10[10000]00;10[11100]00;00[00000]00;
+programowanie w internecie(16);10[11111]00;00[00000]00;10[00111]00;10[00001]00;
+programowanie w srodowiskach graficznych(16);10[11111]00;00[00000]00;10[00011]00;00[00000]00;
+technologie sieciowe(21);10[11111]00;00[00000]00;10[00111]00;00[00000]00;
