@@ -1,7 +1,7 @@
 -;wyklad(33);cwiczenia(27);labolatoria(25);projekt(31);
 angielski(24);00[00000]g0;10[11100]g0;00[00000]g0;00[00000]g0;
 grafika i komunikacja czlowiek komputer(21);10[11111]g0;10[00011]g0;00[00000]g0;00[00000]g0;
-inzynieria oprogramowania(15);10[00111]g0;00[00000]g0;00[00000]g0;00[00000]g0;
+inzynieria oprogramowania(14);10[00111]g0;00[00000]g0;00[00000]g0;00[00000]g0;
 metody obliczeniowe(20);10[11111]g0;00[00000]g0;10[00011]g0;00[00000]g0;
 metody propabilistyczne i statystyka(15);10[10000]g0;10[10000]g0;10[11100]g0;00[00000]g0;
 programowanie w internecie(16);10[11111]g0;00[00000]g0;10[00111]g0;10[00001]g0;

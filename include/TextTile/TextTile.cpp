@@ -83,7 +83,7 @@ void TextTile::mouseWheelMovedDown(){
         if(this->charSize > 1)
             this->charSize--;
         this->updateTextPosition();
-        printf("currenttext char Size: %d\n", this->charSize);
+        printf("current text char Size: %d\n", this->charSize);
     }
 }
 void TextTile::keyboardKeys(const sf::Keyboard::Key&){
