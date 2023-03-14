@@ -22,36 +22,19 @@ void TextTile::initText(const sf::Font& font, const unsigned int& charSize){
             tmp += i;
         else{
             this->text_vector.push_back(new sf::Text(tmp, font, this->charSize));
-                                                                            this->text_vector_globalBounds.push_back(new sf::RectangleShape());
             tmp.clear();
         }
     }
     this->text_vector.push_back(new sf::Text(tmp, font, this->charSize));
-                                                                            this->text_vector_globalBounds.push_back(new sf::RectangleShape());
     
     for(sf::Text* t : this->text_vector)
-        t->setFillColor(sf::Color(30,200,30));
-        
-    
-                                                                            for(sf::RectangleShape* t : this->text_vector_globalBounds)
-                                                                                t->setFillColor(sf::Color(255,65,65));
-
-
-    // for(int i=0; i<this->text_vector.size(); i++){
-    //     sf::FloatRect fr = text_vector[i]->getGlobalBounds();
-    //     this->text_vector_globalBounds[i]->setOrigin(
-    //         fr.left + fr.width/2.f,
-    //         fr.top + fr.height/2.f
-    //     );
-    // }
-
-
+        t->setFillColor(sf::Color(30,30,30));
 
     this->updateTextPosition();
 
 }
 void TextTile::initShape(){
-    this->mainShape.setFillColor(sf::Color(20,20,20));
+    this->mainShape.setFillColor(sf::Color(200,200,200));
 
 }
 
@@ -68,24 +51,12 @@ TextTile::~TextTile(){
 }
 
 void TextTile::updateTextPosition(){
-    for(sf::Text* i : this->text_vector){
-        std::string a = "0";
-        a[0] = rand()%50 + 40;
-        i->setString(a);
-        i->rotate(9.f);
-    }
-
     for(int i=0; i<this->text_vector.size(); i++){
         this->text_vector[i]->setCharacterSize(this->charSize);
         this->text_vector[i]->setPosition(sf::Vector2f(
             this->mainShape.getGlobalBounds().left + (this->mainShape.getGlobalBounds().width - this->text_vector[i]->getGlobalBounds().width)/2,
-            this->mainShape.getGlobalBounds().top + this->charSize * i + 2.f
+            this->mainShape.getGlobalBounds().top + this->charSize * i + 10.f
         ));
-                                                                            this->text_vector_globalBounds[i]->setPosition(this->text_vector[i]->getPosition());
-                                                                            this->text_vector_globalBounds[i]->setSize(sf::Vector2f(
-                                                                                    this->text_vector[i]->getLocalBounds().width,
-                                                                                    this->text_vector[i]->getLocalBounds().height
-                                                                            ));
     }
     
 }
@@ -125,8 +96,6 @@ void TextTile::update(){
 }
 void TextTile::render(sf::RenderTarget* window){
     window->draw(this->mainShape);
-                                                                            for(sf::RectangleShape* t : this->text_vector_globalBounds)
-                                                                                window->draw(*t);
     for(sf::Text* t : this->text_vector)
         window->draw(*t);
 }
