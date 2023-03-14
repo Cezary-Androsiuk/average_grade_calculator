@@ -58,7 +58,6 @@ void TextTile::updateTextPosition(){
             this->mainShape.getGlobalBounds().top + this->charSize * i + 10.f
         ));
     }
-    
 }
 
 void TextTile::mouseLeftPressed(){
