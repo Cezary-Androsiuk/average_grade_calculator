@@ -13,7 +13,7 @@ int main(){
 /*
 
 TODO grade value 1/4  &  3/4 change to grade 2 in first term
-TODO text height center
+TODO text height center (in hand)
 TODO DescriptionNotification with full name of object
 
 */

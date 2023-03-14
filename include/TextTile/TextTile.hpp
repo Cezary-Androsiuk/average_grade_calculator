@@ -8,6 +8,7 @@ class TextTile : public Tile{
     std::string data;
 
     std::vector<sf::Text*> text_vector;
+    std::vector<sf::RectangleShape*> text_vector_globalBounds;
     unsigned int charSize;
 
     void init();
