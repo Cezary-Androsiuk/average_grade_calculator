@@ -3,6 +3,25 @@
 void GradeTile::init(){
     this->tileType = 0;
 
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect( 0.f, 0.f, 25.f, 18.f)); // expected grade 3
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(25.f, 0.f, 24.f, 18.f)); // expected grade 3.5
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(49.f, 0.f, 24.f, 18.f)); // expected grade 4
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(73.f, 0.f, 24.f, 18.f)); // expected grade 4.5
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(97.f, 0.f, 25.f, 18.f)); // expected grade 5
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(96.f, 96.f, 26.f, 26.f)); // lock 
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(0.f, 18.f, 122.f, 104.f)); // current grade
+
+
+#if DRAW_MOUSE_ACTIONS_AREAS_ON_TILE == 1
+    for(const sf::FloatRect* cfr : this->mouseActionsAreasOnTile){
+        sf::RectangleShape* rs = new sf::RectangleShape();
+        rs->setSize(sf::Vector2f(cfr->width, cfr->height));
+        rs->setPosition(this->localPosition_to_globalPosition(sf::Vector2f(cfr->left, cfr->top)));
+        rs->setFillColor(sf::Color(rand()%255, rand()%255, rand()%255, 100));
+        this->mouseActionsAreasOnTile_asRectangle.push_back(rs);
+    }
+#endif
+
     this->data.enabled = true;
     this->data.locked = false;
     for(int i=0; i<5; i++)
@@ -60,7 +79,7 @@ void GradeTile::initShapes(){
 
 
     for(int i=0; i<5; i++)
-        this->expectedGrade[i].setPosition(this->localPosition_to_globalPosition(sf::Vector2f(this->mouseUpdateAreaOnTile[i].left + 1.f, 2.f)));
+        this->expectedGrade[i].setPosition(this->localPosition_to_globalPosition(sf::Vector2f(this->mouseActionsAreasOnTile[i]->left + 1.f, 2.f)));
     this->updateExpectedGradeTexture();
 
 
@@ -77,7 +96,13 @@ const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture)
     this->initShapes();
 }
 GradeTile::~GradeTile(){
+    for(const sf::FloatRect* cfr : this->mouseActionsAreasOnTile)
+        delete cfr;
 
+#if DRAW_MOUSE_ACTIONS_AREAS_ON_TILE == 1
+    for(sf::RectangleShape* rs : this->mouseActionsAreasOnTile_asRectangle)
+        delete rs;
+#endif
 }
 
 
@@ -110,7 +135,7 @@ void GradeTile::updateCurrentGradeTexture(){
 }
 
 void GradeTile::mouseLeftPressed(){
-    if(!this->data.enabled || this->data.locked)
+    if(!this->data.enabled)
         return;
 
     switch (this->mouseHoverOnPart){
@@ -119,11 +144,16 @@ void GradeTile::mouseLeftPressed(){
     case 3:
     case 4:
     case 5:
+        if(this->data.locked) return;
         this->data.expectedGrade[this->mouseHoverOnPart-1] = (this->data.expectedGrade[this->mouseHoverOnPart-1] ? false : true);
         this->updateExpectedGradeTexture();
         break;
-    
     case 6:
+        this->data.locked = (this->data.locked ? false : true);
+        this->updateTileTemplateTexture();
+        break;
+    case 7:
+        if(this->data.locked) return;
         if(this->data.grade_type >= MAX_GRADE_TYPE)
             this->data.grade_type = 0;
         else
@@ -134,7 +164,7 @@ void GradeTile::mouseLeftPressed(){
     }
 }
 void GradeTile::mouseRightPressed(){
-    if(!this->data.enabled)
+    if(!this->data.enabled || this->data.locked)
         return;
     
     switch (this->mouseHoverOnPart){
@@ -143,9 +173,9 @@ void GradeTile::mouseRightPressed(){
     case 3: break;
     case 4: break;
     case 5: break;
-    case 6:
-        this->data.locked = (this->data.locked ? false : true);
-        this->updateTileTemplateTexture();
+    case 6: break;
+    case 7:
+        // grade 2
         break;
     }
 }
@@ -157,6 +187,7 @@ void GradeTile::mouseMiddlePressed(){
     case 4:
     case 5:
     case 6:
+    case 7:
         this->data.enabled = (this->data.enabled ? false : true);
         break;
     }
@@ -165,7 +196,7 @@ void GradeTile::mouseWheelMovedUp(){
     if(!this->data.enabled || this->data.locked)
         return;
 
-    if(this->mouseHoverOnPart == 6){
+    if(this->mouseHoverOnPart == 7){
         if(this->data.grade > 8) this->data.grade = 0;
         else this->data.grade++;
 
@@ -176,7 +207,7 @@ void GradeTile::mouseWheelMovedDown(){
     if(!this->data.enabled || this->data.locked)
         return;
         
-    if(this->mouseHoverOnPart == 6){
+    if(this->mouseHoverOnPart == 7){
         if(this->data.grade < 1) this->data.grade = 9;
         else this->data.grade--;
 
@@ -195,6 +226,11 @@ void GradeTile::render(sf::RenderTarget* window){
         for(int i=0; i<5; i++)
             window->draw(this->expectedGrade[i]);
         window->draw(this->currentGrade);
+
+    #if DRAW_MOUSE_ACTIONS_AREAS_ON_TILE == 1
+        for(sf::RectangleShape* rs : this->mouseActionsAreasOnTile_asRectangle)
+            window->draw(*rs);
+    #endif
     }
 }
 
@@ -218,9 +254,20 @@ void GradeTile::mouseHoverUpdate(const sf::Vector2f& mousePos){
     if(this->mainShape.getGlobalBounds().contains(mousePos)){
         this->mouseHoverTime++;
         // detect above what part mouse is hovering (nice inglisz)
-        for(int i=0; i<6; i++)
-            if(this->mouseUpdateAreaOnTile[i].contains(this->globalPosition_to_localPosition(mousePos)))
-                this->mouseHoverOnPart = i+1;
+        // for(int i=0; i<6; i++){
+        //     if(this->mouseUpdateAreaOnTile[i].contains(this->globalPosition_to_localPosition(mousePos))){
+        //         this->mouseHoverOnPart = i+1;
+        //         break;
+        //     }
+        // }
+        int i = 1;
+        for(const sf::FloatRect* cfr : this->mouseActionsAreasOnTile){
+            if(cfr->contains(this->globalPosition_to_localPosition(mousePos))){
+                this->mouseHoverOnPart = i;
+                break;
+            }
+            i++;
+        }
     }
     else {
         this->mouseHoverTime = 0;
