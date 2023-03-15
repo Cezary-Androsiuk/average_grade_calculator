@@ -138,65 +138,39 @@ void GradeTile::mouseLeftPressed(){
     if(!this->data.enabled)
         return;
 
-    switch (this->mouseHoverOnPart){
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-        if(this->data.locked) return;
+    if(1 <= this->mouseHoverOnPart && this->mouseHoverOnPart <= 5 && !this->data.locked){
         this->data.expectedGrade[this->mouseHoverOnPart-1] = (this->data.expectedGrade[this->mouseHoverOnPart-1] ? false : true);
         this->updateExpectedGradeTexture();
-        break;
-    case 6:
+    }
+    else if(this->mouseHoverOnPart == 6){
         this->data.locked = (this->data.locked ? false : true);
         this->updateTileTemplateTexture();
-        break;
-    case 7:
-        if(this->data.locked) return;
+    }
+    else if(this->mouseHoverOnPart == 7 && !this->data.locked){
         if(this->data.grade_type >= MAX_GRADE_TYPE)
             this->data.grade_type = 0;
         else
             this->data.grade_type++;
-        
         this->updateCurrentGradeTexture();
-        break;
     }
 }
 void GradeTile::mouseRightPressed(){
     if(!this->data.enabled || this->data.locked)
         return;
     
-    switch (this->mouseHoverOnPart){
-    case 1: break;
-    case 2: break;
-    case 3: break;
-    case 4: break;
-    case 5: break;
-    case 6: break;
-    case 7:
-        // grade 2
-        break;
-    }
+    if(this->mouseHoverOnPart == 7){}
+        // change grade texture to grade 2
 }
 void GradeTile::mouseMiddlePressed(){
-    switch (this->mouseHoverOnPart){
-    case 1:
-    case 2:
-    case 3:
-    case 4:
-    case 5:
-    case 6:
-    case 7:
+    if(this->mouseHoverOnPart != 0)
         this->data.enabled = (this->data.enabled ? false : true);
-        break;
-    }
 }
+
 void GradeTile::mouseWheelMovedUp(){
     if(!this->data.enabled || this->data.locked)
         return;
 
-    if(this->mouseHoverOnPart == 7){
+    if(this->mouseHoverOnPart >= 6){
         if(this->data.grade > 8) this->data.grade = 0;
         else this->data.grade++;
 
@@ -207,7 +181,7 @@ void GradeTile::mouseWheelMovedDown(){
     if(!this->data.enabled || this->data.locked)
         return;
         
-    if(this->mouseHoverOnPart == 7){
+    if(this->mouseHoverOnPart >= 6){
         if(this->data.grade < 1) this->data.grade = 9;
         else this->data.grade--;
 
@@ -254,12 +228,6 @@ void GradeTile::mouseHoverUpdate(const sf::Vector2f& mousePos){
     if(this->mainShape.getGlobalBounds().contains(mousePos)){
         this->mouseHoverTime++;
         // detect above what part mouse is hovering (nice inglisz)
-        // for(int i=0; i<6; i++){
-        //     if(this->mouseUpdateAreaOnTile[i].contains(this->globalPosition_to_localPosition(mousePos))){
-        //         this->mouseHoverOnPart = i+1;
-        //         break;
-        //     }
-        // }
         int i = 1;
         for(const sf::FloatRect* cfr : this->mouseActionsAreasOnTile){
             if(cfr->contains(this->globalPosition_to_localPosition(mousePos))){
