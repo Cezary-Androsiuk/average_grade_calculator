@@ -372,8 +372,8 @@ void Program::mouseHoverDetection(){
 
 bool Program::getGradeFromSingleData(const std::string& singleData, float& min, float& max) const{
     // only enabled GradeTiles could went in
-    // "10[00000]g0"
-    // enabled locked [expected grade] grade_type grade
+    // "10[00000]000"
+    // enabled locked [expected grade] grade_type grade2 grade
     
     if(singleData[10] != '0'){
         // known grade

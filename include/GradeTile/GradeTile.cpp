@@ -35,8 +35,8 @@ void GradeTile::init(){
     this->mouseHoverTime = 0;
 }
 void GradeTile::interpretData(const std::string& rawData){
-    // "10[00000]g0"
-    // enabled locked [expected grade] grade_type grade
+    // "10[00000]000"
+    // enabled locked [expected grade] grade_type grade2 grade
     switch (rawData[0]){
     case '1': this->data.enabled = true; break;
     case '0': this->data.enabled = false; break;
@@ -220,8 +220,8 @@ void GradeTile::render(sf::RenderTarget* window){
 
 
 std::string GradeTile::getData() const{
-    // "10[00000]g0"
-    // enabled locked [expected grade] grade_type grade
+    // "10[00000]000"
+    // enabled locked [expected grade] grade_type grade2 grade
     std::string dataToReturn = "";
     dataToReturn += (this->data.enabled ? '1' : '0');
     dataToReturn += (this->data.locked ? '1' : '0');
