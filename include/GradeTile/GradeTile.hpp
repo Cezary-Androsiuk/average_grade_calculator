@@ -11,9 +11,8 @@ class GradeTile : public Tile{
         bool enabled;
         bool locked;
         bool expectedGrade[5];
-        int grade; // {0, 1, 2, 3, 4, 5, 6, 7, 8, 9} => {-, 2, 2.5, 2.75, 3, 3.25, 3.5, 4, 4.5, 5}
-        // int grade; // {0, 1, 2, 3, 4, 5, 6} => {-, 2, 3, 3.5, 4, 4.5, 5}
-        // bool grade2;
+        int grade; // {0, 1, 2, 3, 4, 5, 6} => {-, 2, 3, 3.5, 4, 4.5, 5}
+        bool grade2;
         int grade_type; // 1 gray, 2 red
     } data;
     int mouseHoverOnPart; // 0 none, 1-5 expectedGrade, 8 lock, 7 grade

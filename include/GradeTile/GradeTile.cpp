@@ -3,11 +3,11 @@
 void GradeTile::init(){
     this->tileType = 0;
 
-    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect( 0.f, 0.f, 25.f, 18.f)); // expected grade 3
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect( 1.f, 0.f, 24.f, 18.f)); // expected grade 3
     this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(25.f, 0.f, 24.f, 18.f)); // expected grade 3.5
     this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(49.f, 0.f, 24.f, 18.f)); // expected grade 4
     this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(73.f, 0.f, 24.f, 18.f)); // expected grade 4.5
-    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(97.f, 0.f, 25.f, 18.f)); // expected grade 5
+    this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(97.f, 0.f, 24.f, 18.f)); // expected grade 5
     this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(96.f, 96.f, 26.f, 26.f)); // lock 
     this->mouseActionsAreasOnTile.push_back(new const sf::FloatRect(0.f, 18.f, 122.f, 104.f)); // current grade
 
@@ -27,7 +27,9 @@ void GradeTile::init(){
     for(int i=0; i<5; i++)
         this->data.expectedGrade[i] = false;
     this->data.grade = 0;
+    this->data.grade2 = false;
     this->data.grade_type = 1;
+
     
     this->mouseHoverOnPart = 0;
     this->mouseHoverTime = 0;
@@ -63,8 +65,15 @@ void GradeTile::interpretData(const std::string& rawData){
     if('0' <= rawData[9] && rawData[9] <= (MAX_GRADE_TYPE + 48)) this->data.grade_type = rawData[9] - 48; // less than 10
     else printf("can not interpret '%c' in \"%s\"\n",rawData[9],rawData.c_str());
 
-    if('0' <= rawData[10] && rawData[10] <= '9') this->data.grade = rawData[10] - 48; // less than 10
-    else printf("can not interpret '%c' in \"%s\"\n",rawData[10],rawData.c_str());
+    switch (rawData[10]){
+    case '1': this->data.grade2 = true; break;
+    case '0': this->data.grade2 = false; break;
+    default: printf("can not interpret '%c' in \"%s\"\n",rawData[10],rawData.c_str());
+        break;
+    }
+
+    if('0' <= rawData[11] && rawData[11] <= '6') this->data.grade = rawData[11] - 48; // less than 10
+    else printf("can not interpret '%c' in \"%s\"\n",rawData[11],rawData.c_str());
 }
 void GradeTile::initTextures(const sf::Texture& tileTemplateTexture, const sf::Texture& expectedGradeTexture, const sf::Texture& currentGradeTexture){
     this->tileTemplate.setTexture(tileTemplateTexture);
@@ -83,7 +92,7 @@ void GradeTile::initShapes(){
     this->updateExpectedGradeTexture();
 
 
-    this->currentGrade.setPosition(this->localPosition_to_globalPosition(sf::Vector2f(21.f, 44.f)));
+    this->currentGrade.setPosition(this->localPosition_to_globalPosition(sf::Vector2f(this->mouseActionsAreasOnTile[6]->left,this->mouseActionsAreasOnTile[6]->top)));
     this->updateCurrentGradeTexture();
 }
 
@@ -128,8 +137,8 @@ void GradeTile::updateExpectedGradeTexture(){
 void GradeTile::updateCurrentGradeTexture(){
     this->currentGrade.setTextureRect(
         sf::IntRect(
-            sf::Vector2i(this->data.grade * 80, this->data.grade_type * 50), 
-            sf::Vector2i(80, 50)
+            sf::Vector2i(this->data.grade * 122 + this->data.grade2 * 854, this->data.grade_type * 104), 
+            sf::Vector2i(122, 104)
         )
     );
 }
@@ -158,8 +167,9 @@ void GradeTile::mouseRightPressed(){
     if(!this->data.enabled || this->data.locked)
         return;
     
-    if(this->mouseHoverOnPart == 7){}
-        // change grade texture to grade 2
+    if(this->mouseHoverOnPart == 7)
+        this->data.grade2 = (this->data.grade2 ? false : true);
+    this->updateCurrentGradeTexture();
 }
 void GradeTile::mouseMiddlePressed(){
     if(this->mouseHoverOnPart != 0)
@@ -171,7 +181,7 @@ void GradeTile::mouseWheelMovedUp(){
         return;
 
     if(this->mouseHoverOnPart >= 6){
-        if(this->data.grade > 8) this->data.grade = 0;
+        if(this->data.grade > 5) this->data.grade = 0;
         else this->data.grade++;
 
         this->updateCurrentGradeTexture();
@@ -182,7 +192,7 @@ void GradeTile::mouseWheelMovedDown(){
         return;
         
     if(this->mouseHoverOnPart >= 6){
-        if(this->data.grade < 1) this->data.grade = 9;
+        if(this->data.grade < 1) this->data.grade = 6;
         else this->data.grade--;
 
         this->updateCurrentGradeTexture();
@@ -221,6 +231,7 @@ std::string GradeTile::getData() const{
     dataToReturn += ']';
 
     dataToReturn += this->data.grade_type + 48; // less than 10
+    dataToReturn += this->data.grade2 + 48;
     dataToReturn += this->data.grade + 48; // less than 10
     return dataToReturn;
 }
