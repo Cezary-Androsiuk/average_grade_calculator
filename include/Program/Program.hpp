@@ -57,6 +57,7 @@ public:
     void updateText();
     void updateResetButton();
     void mouseHoverDetection();
+    
     bool getGradeFromSingleData(const std::string&, float&, float&) const;
     void computeGradeAvarage();
 public:

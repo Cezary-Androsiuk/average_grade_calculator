@@ -373,60 +373,198 @@ void Program::mouseHoverDetection(){
 bool Program::getGradeFromSingleData(const std::string& singleData, float& min, float& max) const{
     // only enabled GradeTiles could went in
     // "10[00000]000"
+    //  0123456789AB
     // enabled locked [expected grade] grade_type grade2 grade
-    
-    if(singleData[10] != '0'){
-        // known grade
-        float grade;
-        switch(singleData[10]){
-            case '1': grade = 2.f;   break;
-            case '2': grade = 2.5f;  break;
-            case '3': grade = 2.75f; break;
-            case '4': grade = 3.f;   break;
-            case '5': grade = 3.25f; break;
-            case '6': grade = 3.5f;  break;
-            case '7': grade = 4.f;   break;
-            case '8': grade = 4.5f;  break;
-            case '9': grade = 5.f;   break;
-        }
-        min = grade;
-        max = grade;
-        return true;
-    }
-    else if(singleData.find("[00000]",2) != std::string::npos){
-        // unknown grade and unknown range
-        // this tiles are not used in computing avarage grade
-        return false;    
-    }
-    // unknown grade but known range
-    // XD
-    min = 3.f;
-    if(singleData[3] == '0'){
-        min = 3.5f;
-        if(singleData[4] == '0'){
-            min = 4.f;
-            if(singleData[5] == '0'){
-                min = 4.5f;
-                if(singleData[6] == '0'){
-                    min = 5.f;
-                }
-            }
-        }
-    }
-    max = 5.f;
-    if(singleData[7] == '0'){
-        max = 4.5f;
-        if(singleData[6] == '0'){
-            max = 4.f;
-            if(singleData[5] == '0'){
-                max = 3.5f;
-                if(singleData[4] == '0'){
-                    max = 3.f;
-                }
-            }
-        }
-    }
 
+    // this methond is true nightmare
+    
+    if(singleData[10] == '1'){
+        // "1_[_____]_1_"
+        switch (singleData[11]){
+        case '0':
+            // "1_[_____]_10"
+            if(singleData.find("[00000]",2) != std::string::npos){
+                // "1_[00000]_10"
+                min = 2.f;
+                max = 2.f;
+            }
+            else{
+                float tmp_min = 0.f;
+                float tmp_max = 0.f;
+                // "1_[1____]_10"
+                tmp_min = 3.f;
+                if(singleData[3] == '0'){
+                    // "1_[01___]_10"
+                    tmp_min = 3.5f;
+                    if(singleData[4] == '0'){
+                        // "1_[001__]_10"
+                        tmp_min = 4.f;
+                        if(singleData[5] == '0'){
+                            // "1_[0001_]_10"
+                            tmp_min = 4.5f;
+                            if(singleData[6] == '0'){
+                                // "1_[00001]_10"
+                                tmp_min = 5.f;
+                            }
+                        }
+                    }
+                }
+                // "1_[____1]_10"
+                tmp_max = 5.f;
+                if(singleData[7] == '0'){
+                    // "1_[___10]_10"
+                    tmp_max = 4.5f;
+                    if(singleData[6] == '0'){
+                        // "1_[__100]_10"
+                        tmp_max = 4.f;
+                        if(singleData[5] == '0'){
+                            // "1_[_1000]_10"
+                            tmp_max = 3.5f;
+                            if(singleData[4] == '0'){
+                                // "1_[10000]_10"
+                                tmp_max = 3.f;
+                            }
+                        }
+                    }
+                }
+                min = (2.f + tmp_min) / 2;
+                max = (2.f + tmp_max) / 2;
+            }
+            break;
+        case '1':
+            // "1_[_____]_11"
+            // 2 & 2
+            min = 2.f;
+            max = 2.f;
+            break;
+        case '2':
+            // "1_[_____]_12"
+            // 2 & 3
+            min = 2.5f;
+            max = 2.5f;
+            break;
+        case '3':
+            // "1_[_____]_13"
+            // 2 & 3.5
+            min = 2.75f;
+            max = 2.75f;
+            break;
+        case '4':
+            // "1_[_____]_14"
+            // 2 & 4
+            min = 3.f;
+            max = 3.f;
+            break;
+        case '5':
+            // "1_[_____]_15"
+            // 2 & 4.5
+            min = 3.25f;
+            max = 3.25f;
+            break;
+        case '6':
+            // "1_[_____]_16"
+            // 2 & 5
+            min = 3.5f;
+            max = 3.5f;
+            break;
+        default: printf("getGradeFromSingleData() ?\n");
+            break;
+        }
+    }
+    else{
+        // "1_[_____]_0_"
+        switch (singleData[11]){
+        case '0':
+            // "1_[_____]_00"
+            if(singleData.find("[00000]",2) != std::string::npos){
+                // "1_[00000]_00"
+                // unknown grade and unknown range
+                // those tiles are not used in computing avarage grade
+                return false;    
+            }
+            else{
+                float tmp_min = 0.f;
+                float tmp_max = 0.f;
+                // "1_[1____]_00"
+                tmp_min = 3.f;
+                if(singleData[3] == '0'){
+                    // "1_[01___]_00"
+                    tmp_min = 3.5f;
+                    if(singleData[4] == '0'){
+                        // "1_[001__]_00"
+                        tmp_min = 4.f;
+                        if(singleData[5] == '0'){
+                            // "1_[0001_]_00"
+                            tmp_min = 4.5f;
+                            if(singleData[6] == '0'){
+                                // "1_[00001]_00"
+                                tmp_min = 5.f;
+                            }
+                        }
+                    }
+                }
+                // "1_[____1]_00"
+                tmp_max = 5.f;
+                if(singleData[7] == '0'){
+                    // "1_[___10]_00"
+                    tmp_max = 4.5f;
+                    if(singleData[6] == '0'){
+                        // "1_[__100]_00"
+                        tmp_max = 4.f;
+                        if(singleData[5] == '0'){
+                            // "1_[_1000]_00"
+                            tmp_max = 3.5f;
+                            if(singleData[4] == '0'){
+                                // "1_[10000]_00"
+                                tmp_max = 3.f;
+                            }
+                        }
+                    }
+                }
+                min = tmp_min;
+                max = tmp_max;
+            }
+            break;
+        case '1':
+            // "1_[_____]_01"
+            // 2
+            min = 2.f;
+            max = 2.f;
+            break;
+        case '2':
+            // "1_[_____]_02"
+            // 3
+            min = 3.f;
+            max = 3.f;
+            break;
+        case '3':
+            // "1_[_____]_03"
+            // 3.5
+            min = 3.5f;
+            max = 3.5f;
+            break;
+        case '4':
+            // "1_[_____]_04"
+            // 4
+            min = 4.f;
+            max = 4.f;
+            break;
+        case '5':
+            // "1_[_____]_05"
+            // 4.5
+            min = 4.5f;
+            max = 4.5f;
+            break;
+        case '6':
+            // "1_[_____]_06"
+            // 5
+            min = 5.f;
+            max = 5.f;
+            break;
+        default: printf("getGradeFromSingleData() ?\n");
+            break;
+        }
+    }
     return true;
 }
 void Program::computeGradeAvarage(){
