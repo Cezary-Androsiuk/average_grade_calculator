@@ -33,7 +33,7 @@
 #define TILE_POSITION sf::Vector2f((TILE_X_POS), (TILE_Y_POS))
 
 #define HOVER_DESCRIPTION_ENABLED true
-#define DATA_FILE "data.txt"
+#define DATA_FILE "4sem_data.txt"
 
 #endif
 
